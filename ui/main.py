@@ -24,7 +24,6 @@ if __name__ == '__main__':
     #while Query.next():
     #    print(Query.value(0),Query.value(1),)
 
-
     myWin = MyWindow()
     myWin.show()
     sys.exit(app.exec_())

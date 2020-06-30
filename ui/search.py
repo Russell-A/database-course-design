@@ -6,7 +6,9 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets,QtGui,QtCore
+from PyQt5.QtCore import *
+from PyQt5.QtSql import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -125,18 +127,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.horizontalLayout.addItem(spacerItem)
-        self.tableView = QtWidgets.QTableView(self.centralwidget)
+        self.output_search = QtWidgets.QTableView(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.tableView.sizePolicy().hasHeightForWidth())
-        self.tableView.setSizePolicy(sizePolicy)
-        self.tableView.setObjectName("tableView")
-        self.horizontalLayout.addWidget(self.tableView)
+        sizePolicy.setHeightForWidth(self.output_search.sizePolicy().hasHeightForWidth())
+        self.output_search.setSizePolicy(sizePolicy)
+        self.output_search.setObjectName("output_search")
+        self.horizontalLayout.addWidget(self.output_search)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 567, 18))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 567, 21))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -179,7 +181,45 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_2.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.Search.clicked.connect(self.searchresult)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
+    def searchresult(self):
+        # query_departure = QSqlQuery()
+        # query_departure.prepare("SELECT 机场代码 FROM 机场 where 所在城市 = :departure")
+        # query_departure.bindValue(":departure", self.comboBox_departure.currentText())
+        # query_departure.exec_()
+        # list_departure = list()
+        # while query_departure.next():
+        #     print(query_departure.value(0))
+        #
+        # query_destination = QSqlQuery()
+        # query_destination.prepare("SELECT 机场代码 FROM 机场 where 所在城市 = :destination")
+        # query_destination.bindValue(":destination", self.comboBox_destination.currentText())
+        # query_destination.exec_()
+        # list_destination = list()
+        # while query_destination.next():
+        #     print(query_destination.value(0))
+
+        query_flight = QSqlQuery()
+        query_flight.prepare('SELECT 航班编号 FROM 航班 '
+                             'WHERE 航班.出发机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
+                             'and 航班.到达机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
+        query_flight.bindValue(":departure", self.comboBox_departure.currentText())
+        query_flight.bindValue(":destination", self.comboBox_destination.currentText())
+        query_flight.exec_()
+        while query_flight.next():
+            print(query_flight.value(0))
+
+        self.model = QSqlTableModel()
+        self.output_search.setModel(self.model)
+        self.model.setTable('航班')
+        self.model.Filter()
+
+        self.output_search.show()
+
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
