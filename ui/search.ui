@@ -316,7 +316,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QTableView" name="tableView">
+       <widget class="QTableView" name="output_search">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -428,5 +428,22 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>Search</sender>
+   <signal>clicked()</signal>
+   <receiver>output_search</receiver>
+   <slot>clearSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
