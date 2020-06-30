@@ -9,6 +9,7 @@
 from PyQt5 import QtWidgets,QtGui,QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtSql import *
+import sys
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -209,13 +210,20 @@ class Ui_MainWindow(object):
         query_flight.bindValue(":departure", self.comboBox_departure.currentText())
         query_flight.bindValue(":destination", self.comboBox_destination.currentText())
         query_flight.exec_()
+        flight = "("
         while query_flight.next():
-            print(query_flight.value(0))
+            flight += "'" + query_flight.value(0) + "'"
+            if query_flight.next():
+                flight += ","
+                query_flight.previous()
+        flight += ")"
 
         self.model = QSqlTableModel()
         self.output_search.setModel(self.model)
-        self.model.setTable('航班')
-        self.model.Filter()
+        self.model.setTable('飞行计划安排')
+        self.model.setFilter("航班编号 in %s" % (flight))
+        print(self.model.filter())
+        self.model.select()
 
         self.output_search.show()
 
