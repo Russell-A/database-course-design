@@ -3,7 +3,11 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 # 在这里加上所有的文件
 from search import *
-
+import register
+import login
+import search
+import register_win
+import register_fail
 
 
 class MyWindow(QMainWindow, Ui_MainWindow):
@@ -54,7 +58,7 @@ if __name__ == '__main__':
         register_fail_dialog_ui.button_connect(register_fail_dialog, child_register_ui.register_2)
 
 
-
+    main.show()
     myWin = MyWindow()
     myWin.show()
     sys.exit(app.exec_())
