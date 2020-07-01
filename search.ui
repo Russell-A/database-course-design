@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
-    <height>377</height>
+    <width>567</width>
+    <height>384</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -23,6 +23,12 @@
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
            <widget class="QLabel" name="label_departure">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Departure</string>
             </property>
@@ -32,10 +38,87 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_departure"/>
+           <widget class="QComboBox" name="comboBox_departure">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="editable">
+             <bool>false</bool>
+            </property>
+            <property name="currentText">
+             <string>北京</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>北京</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>成都</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>香港</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>哈尔滨</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>海南</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>上海</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>长春</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>兰州</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>广州</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>长沙</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>南昌</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="label_destination">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>Destination</string>
             </property>
@@ -45,27 +128,88 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_destination"/>
+           <widget class="QComboBox" name="comboBox_destination">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="editable">
+             <bool>false</bool>
+            </property>
+            <item>
+             <property name="text">
+              <string>北京</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>成都</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>香港</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>哈尔滨</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>海南</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>上海</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>长春</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>兰州</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>广州</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>长沙</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>南昌</string>
+             </property>
+            </item>
+           </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
            <widget class="QLabel" name="label_date">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
              <string>DATE</string>
             </property>
@@ -75,22 +219,46 @@
            </widget>
           </item>
           <item>
-           <widget class="QDateEdit" name="dateEdit"/>
+           <widget class="QDateEdit" name="dateEdit">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="dateTime">
+             <datetime>
+              <hour>0</hour>
+              <minute>0</minute>
+              <second>0</second>
+              <year>2019</year>
+              <month>1</month>
+              <day>1</day>
+             </datetime>
+            </property>
+            <property name="maximumDateTime">
+             <datetime>
+              <hour>23</hour>
+              <minute>59</minute>
+              <second>59</second>
+              <year>2019</year>
+              <month>12</month>
+              <day>31</day>
+             </datetime>
+            </property>
+            <property name="minimumDateTime">
+             <datetime>
+              <hour>0</hour>
+              <minute>0</minute>
+              <second>0</second>
+              <year>2019</year>
+              <month>1</month>
+              <day>1</day>
+             </datetime>
+            </property>
+           </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -105,22 +273,25 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_class"/>
+           <widget class="QComboBox" name="comboBox_class">
+            <item>
+             <property name="text">
+              <string>头等舱</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>商务舱</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>经济舱</string>
+             </property>
+            </item>
+           </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="QPushButton" name="Search">
@@ -132,7 +303,20 @@
        </layout>
       </item>
       <item>
-       <widget class="QTableView" name="tableView">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QTableView" name="output_search">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -141,21 +325,21 @@
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QPushButton" name="longin">
-        <property name="text">
-         <string>登录</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="register_2">
-        <property name="text">
-         <string>注册</string>
-        </property>
-       </widget>
-      </item>
      </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="register_2">
+      <property name="text">
+       <string>注册</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="login">
+      <property name="text">
+       <string>登录</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -164,7 +348,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>535</width>
+     <width>567</width>
      <height>22</height>
     </rect>
    </property>
@@ -197,7 +381,6 @@
    <addaction name="menu"/>
    <addaction name="menu_2"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>
@@ -220,10 +403,19 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <action name="actionregister">
-   <property name="checkable">
-    <bool>true</bool>
+  <widget class="QToolBar" name="toolBar_3">
+   <property name="windowTitle">
+    <string>toolBar_3</string>
    </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionregister">
    <property name="text">
     <string>用户注册</string>
    </property>
@@ -250,5 +442,22 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>Search</sender>
+   <signal>clicked()</signal>
+   <receiver>output_search</receiver>
+   <slot>clearSelection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
