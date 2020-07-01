@@ -41,7 +41,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEdit"/>
+    <widget class="QLineEdit" name="user_name"/>
    </item>
    <item>
     <widget class="QLabel" name="label_3">
@@ -57,7 +57,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEdit_2"/>
+    <widget class="QLineEdit" name="password"/>
    </item>
    <item>
     <widget class="QLabel" name="label_5">
@@ -73,10 +73,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEdit_4"/>
+    <widget class="QLineEdit" name="tel"/>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="cancel">
      <property name="styleSheet">
       <string notr="true">font: 9pt &quot;宋体&quot;;
 </string>
@@ -87,7 +87,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="register_2">
      <property name="text">
       <string>注册</string>
      </property>
