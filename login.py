@@ -66,6 +66,7 @@ class Ui_Dialog(object):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
+
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
@@ -88,3 +89,4 @@ class Ui_Dialog(object):
         # first instantiation ,next the name of button
         btn1 = button
         btn1.clicked.connect(child_login.show)
+
