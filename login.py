@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -34,9 +34,9 @@ class Ui_Dialog(object):
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
-        self.lineEdit = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit.setObjectName("lineEdit")
-        self.verticalLayout.addWidget(self.lineEdit)
+        self.user_name = QtWidgets.QLineEdit(Dialog)
+        self.user_name.setObjectName("user_name")
+        self.verticalLayout.addWidget(self.user_name)
         self.label_3 = QtWidgets.QLabel(Dialog)
         font = QtGui.QFont()
         font.setFamily("宋体")
@@ -44,24 +44,24 @@ class Ui_Dialog(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3)
-        self.lineEdit_2 = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.verticalLayout.addWidget(self.lineEdit_2)
-        self.radioButton_3 = QtWidgets.QRadioButton(Dialog)
-        self.radioButton_3.setObjectName("radioButton_3")
-        self.verticalLayout.addWidget(self.radioButton_3)
-        self.radioButton_2 = QtWidgets.QRadioButton(Dialog)
-        self.radioButton_2.setObjectName("radioButton_2")
-        self.verticalLayout.addWidget(self.radioButton_2)
-        self.radioButton = QtWidgets.QRadioButton(Dialog)
-        self.radioButton.setObjectName("radioButton")
-        self.verticalLayout.addWidget(self.radioButton)
-        self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
-        self.pushButton_2 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout.addWidget(self.pushButton_2)
+        self.password = QtWidgets.QLineEdit(Dialog)
+        self.password.setObjectName("password")
+        self.verticalLayout.addWidget(self.password)
+        self.designer = QtWidgets.QRadioButton(Dialog)
+        self.designer.setObjectName("designer")
+        self.verticalLayout.addWidget(self.designer)
+        self.administrator = QtWidgets.QRadioButton(Dialog)
+        self.administrator.setObjectName("administrator")
+        self.verticalLayout.addWidget(self.administrator)
+        self.user = QtWidgets.QRadioButton(Dialog)
+        self.user.setObjectName("user")
+        self.verticalLayout.addWidget(self.user)
+        self.login = QtWidgets.QPushButton(Dialog)
+        self.login.setObjectName("login")
+        self.verticalLayout.addWidget(self.login)
+        self.cancel = QtWidgets.QPushButton(Dialog)
+        self.cancel.setObjectName("cancel")
+        self.verticalLayout.addWidget(self.cancel)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -72,8 +72,19 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "机票订购系统登录"))
         self.label_2.setText(_translate("Dialog", "用户名"))
         self.label_3.setText(_translate("Dialog", "密码"))
-        self.radioButton_3.setText(_translate("Dialog", "设计人员"))
-        self.radioButton_2.setText(_translate("Dialog", "机场管理员"))
-        self.radioButton.setText(_translate("Dialog", "用户"))
-        self.pushButton.setText(_translate("Dialog", "登录"))
-        self.pushButton_2.setText(_translate("Dialog", "取消"))
+        self.designer.setText(_translate("Dialog", "设计人员"))
+        self.administrator.setText(_translate("Dialog", "机场管理员"))
+        self.user.setText(_translate("Dialog", "用户"))
+        self.login.setText(_translate("Dialog", "登录"))
+        self.cancel.setText(_translate("Dialog", "取消"))
+
+    def instantiation(self):
+        login_dialog = QDialog()
+        child_ui = Ui_Dialog()
+        child_ui.setupUi(login_dialog)
+        return login_dialog,child_ui
+
+    def button_connect(self, child_login, button):
+        # first instantiation ,next the name of button
+        btn1 = button
+        btn1.clicked.connect(child_login.show)

@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 
 
 class Ui_Dialog(object):
@@ -33,3 +34,12 @@ class Ui_Dialog(object):
 "</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; color:#00ff7f;\">注册成功！</span></p></body></html>"))
+
+    def instantiation(self):
+        register_win_dialog = QDialog()
+        child11_ui = Ui_Dialog()
+        child11_ui.setupUi(register_win_dialog)
+        return register_win_dialog,child11_ui
+    def button_connect(self,register_win_dialg,button):
+        btn1 = button
+        btn1.clicked.connect(register_win_dialg.show)
