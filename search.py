@@ -198,6 +198,7 @@ class Ui_MainWindow(object):
         self.Search.clicked.connect(self.searchresult)
         # self.login.clicked.connect(self.function_login)
         # self.register_2.clicked.connect(self.function_register)
+
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     # # def function_login(self):
