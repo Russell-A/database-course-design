@@ -183,7 +183,17 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.Search.clicked.connect(self.searchresult)
+        self.login.clicked.connect(self.function_login)
+        self.register_2.clicked.connect(self.function_register)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def function_login(self):
+        child_login, child_login_ui = login.Ui_Dialog.instantiation(login)
+        child_login_ui.button_connect(child_login, main_ui.login)
+
+    def function_register(self):
+        child_register, child_register_ui = register.Ui_Dialog.instantiation(register)
+        child_register_ui.button_connect(child_register, main_ui.register_2)
 
 
     def searchresult(self):
