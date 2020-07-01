@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 # 在这里加上所有的文件
 from search import *
@@ -10,7 +10,7 @@ import register_win
 import register_fail
 
 
-class MyWindow(QMainWindow, Ui_MainWindow):
+class MyWindow(QMainWindow, search.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyWindow, self).__init__(parent)
         self.setupUi(self)
@@ -60,9 +60,14 @@ if __name__ == '__main__':
     #
     # main.show()
 
-
-
-
+    # 实例化窗口和子窗口
+    # login_window = Login_Window()
+    # register_window = Register_Window()
     myWin = MyWindow()
+
+    # 按钮的绑定
+    # myWin.login.clicked.connect(login_window.show)
+    # myWin.register_2.clicked.connect(register_window.show)
+
     myWin.show()
     sys.exit(app.exec_())
