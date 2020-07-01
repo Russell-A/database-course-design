@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>517</width>
+    <width>535</width>
     <height>377</height>
    </rect>
   </property>
@@ -142,14 +142,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="longin">
         <property name="text">
          <string>登录</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="register_2">
         <property name="text">
          <string>注册</string>
         </property>
@@ -164,7 +164,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>517</width>
+     <width>535</width>
      <height>22</height>
     </rect>
    </property>

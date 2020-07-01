@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -31,9 +31,9 @@ class Ui_Dialog(object):
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
-        self.lineEdit = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit.setObjectName("lineEdit")
-        self.verticalLayout.addWidget(self.lineEdit)
+        self.user_name = QtWidgets.QLineEdit(Dialog)
+        self.user_name.setObjectName("user_name")
+        self.verticalLayout.addWidget(self.user_name)
         self.label_3 = QtWidgets.QLabel(Dialog)
         font = QtGui.QFont()
         font.setFamily("宋体")
@@ -41,9 +41,9 @@ class Ui_Dialog(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3)
-        self.lineEdit_2 = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.verticalLayout.addWidget(self.lineEdit_2)
+        self.password = QtWidgets.QLineEdit(Dialog)
+        self.password.setObjectName("password")
+        self.verticalLayout.addWidget(self.password)
         self.label_5 = QtWidgets.QLabel(Dialog)
         font = QtGui.QFont()
         font.setFamily("宋体")
@@ -51,17 +51,17 @@ class Ui_Dialog(object):
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.verticalLayout.addWidget(self.label_5)
-        self.lineEdit_4 = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit_4.setObjectName("lineEdit_4")
-        self.verticalLayout.addWidget(self.lineEdit_4)
-        self.pushButton_2 = QtWidgets.QPushButton(Dialog)
-        self.pushButton_2.setStyleSheet("font: 9pt \"宋体\";\n"
+        self.tel = QtWidgets.QLineEdit(Dialog)
+        self.tel.setObjectName("tel")
+        self.verticalLayout.addWidget(self.tel)
+        self.cancel = QtWidgets.QPushButton(Dialog)
+        self.cancel.setStyleSheet("font: 9pt \"宋体\";\n"
 "")
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.verticalLayout.addWidget(self.pushButton_2)
-        self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
+        self.cancel.setObjectName("cancel")
+        self.verticalLayout.addWidget(self.cancel)
+        self.register_2 = QtWidgets.QPushButton(Dialog)
+        self.register_2.setObjectName("register")
+        self.verticalLayout.addWidget(self.register_2)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -73,5 +73,18 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "用户名"))
         self.label_3.setText(_translate("Dialog", "密码"))
         self.label_5.setText(_translate("Dialog", "联系方式"))
-        self.pushButton_2.setText(_translate("Dialog", "取消"))
-        self.pushButton.setText(_translate("Dialog", "注册"))
+        self.cancel.setText(_translate("Dialog", "取消"))
+        self.register_2.setText(_translate("Dialog", "注册"))
+
+        # 实例化注册窗体
+    def instantiation(self):
+        register_dialog = QDialog()
+        child1_ui = Ui_Dialog()
+        child1_ui.setupUi(register_dialog)
+        return register_dialog,child1_ui
+
+    # connect button
+    def button_connect(self,child_register,button):
+        #first instantiation ,next the name of button
+        btn1 = button
+        btn1.clicked.connect(child_register.show)

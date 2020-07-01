@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -34,3 +34,12 @@ class Ui_Dialog(object):
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:18pt;\"><br /></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; color:#ff0000;\">注册失败（已存在相同用户名）</span></p></body></html>"))
+
+    def instantiation(self):
+        register_fail_dialog = QDialog()
+        child12_ui = Ui_Dialog()
+        child12_ui.setupUi(register_fail_dialog)
+        return register_fail_dialog,child12_ui
+    def button_connect(self,register_fail_dialg,button):
+        btn1 = button
+        btn1.clicked.connect(register_fail_dialg.show)
