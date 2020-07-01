@@ -203,29 +203,29 @@ class Ui_MainWindow(object):
         # while query_destination.next():
         #     print(query_destination.value(0))
 
-        query_flight = QSqlQuery()
+        query_flight = QSqlQuery()     # 新建QSqlQuery对象
         query_flight.prepare('SELECT 航班编号 FROM 航班 '
                              'WHERE 航班.出发机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
-                             'and 航班.到达机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
+                             'and 航班.到达机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')     # 输入SQL语句
         query_flight.bindValue(":departure", self.comboBox_departure.currentText())
-        query_flight.bindValue(":destination", self.comboBox_destination.currentText())
-        query_flight.exec_()
+        query_flight.bindValue(":destination", self.comboBox_destination.currentText())                             #绑定占位符和相应的功能
+        query_flight.exec_()                           # 执行
         flight = "("
         while query_flight.next():
             flight += "'" + query_flight.value(0) + "'"
             if query_flight.next():
                 flight += ","
                 query_flight.previous()
-        flight += ")"
+        flight += ")"         # flight ： (A, B, ....)
 
-        self.model = QSqlTableModel()
-        self.output_search.setModel(self.model)
-        self.model.setTable('飞行计划安排')
-        self.model.setFilter("航班编号 in %s" % (flight))
+        self.model = QSqlTableModel()         # 新建SQLTableModel 对象
+        self.output_search.setModel(self.model)    # 绑定到tableview对象上
+        self.model.setTable('飞行计划安排')       # 相当于 from 语句
+        self.model.setFilter("航班编号 in %s" % (flight))   # 相当于where语句
         print(self.model.filter())
-        self.model.select()
+        self.model.select()                          # 执行SQL select
 
-        self.output_search.show()
+        self.output_search.show()               # 显示
 
 
 
