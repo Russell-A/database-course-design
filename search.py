@@ -16,6 +16,7 @@ import login
 import search
 import register_win
 import register_fail
+import jump_buy
 
 class Register_Window(QDialog, register.Ui_Dialog):
     def __init__(self, parent = None):
@@ -27,6 +28,11 @@ class Login_Window(QDialog, login.Ui_Dialog):
         super(Login_Window, self).__init__(parent)
         self.setupUi(self)
 
+class Jump_Buy_Window(QDialog, jump_buy.Ui_Dialog_jump_buy):
+    def __init__(self, parent=None):
+        super(Jump_Buy_Window, self).__init__(parent)
+        self.setupUi(self)
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -35,6 +41,12 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
+        self.login = QtWidgets.QPushButton(self.centralwidget)
+        self.login.setObjectName("login")
+        self.gridLayout.addWidget(self.login, 2, 0, 1, 1)
+        self.register_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.register_2.setObjectName("register_2")
+        self.gridLayout.addWidget(self.register_2, 1, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -119,7 +131,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.dateEdit.sizePolicy().hasHeightForWidth())
         self.dateEdit.setSizePolicy(sizePolicy)
-        self.dateEdit.setDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 3), QtCore.QTime(0, 0, 0)))
+        self.dateEdit.setDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 1), QtCore.QTime(0, 0, 0)))
         self.dateEdit.setMaximumDateTime(QtCore.QDateTime(QtCore.QDate(2019, 12, 31), QtCore.QTime(23, 59, 59)))
         self.dateEdit.setMinimumDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 1), QtCore.QTime(0, 0, 0)))
         self.dateEdit.setObjectName("dateEdit")
@@ -153,15 +165,12 @@ class Ui_MainWindow(object):
         self.output_search.setObjectName("output_search")
         self.horizontalLayout.addWidget(self.output_search)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-        self.register_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.register_2.setObjectName("register_2")
-        self.gridLayout.addWidget(self.register_2, 1, 0, 1, 1)
-        self.login = QtWidgets.QPushButton(self.centralwidget)
-        self.login.setObjectName("login")
-        self.gridLayout.addWidget(self.login, 2, 0, 1, 1)
+        self.pushbutton_buy = QtWidgets.QPushButton(self.centralwidget)
+        self.pushbutton_buy.setObjectName("pushbutton_buy")
+        self.gridLayout.addWidget(self.pushbutton_buy, 3, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 567, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 567, 21))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -206,6 +215,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.Search.clicked.connect(self.searchresult)
         self.login.clicked.connect(self.open_login)
+        self.pushbutton_buy.clicked.connect(self.jump_buy)
         self.register_2.clicked.connect(self.open_register)
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -257,7 +267,7 @@ class Ui_MainWindow(object):
                              % (flight, self.dateEdit.date().toString("yyyy-MM-dd"), self.comboBox_class.currentText()))  # 相当于where语句
         # self.model.setFilter("DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0" % (self.dateEdit.date().toString("yyyy-MM-dd") ))
 
-        print(self.model.filter())
+        # print(self.model.filter())
         self.model.select()  # 执行SQL select
         self.output_search.hideColumn(3)
         self.output_search.hideColumn(4)
@@ -340,6 +350,7 @@ class Ui_MainWindow(object):
         self.Search.setText(_translate("MainWindow", "Search"))
         self.register_2.setText(_translate("MainWindow", "注册"))
         self.login.setText(_translate("MainWindow", "登录"))
+        self.pushbutton_buy.setText(_translate("MainWindow", "Buy"))
         self.menu.setTitle(_translate("MainWindow", "注册"))
         self.menu_2.setTitle(_translate("MainWindow", "功能"))
         self.menu_3.setTitle(_translate("MainWindow", "用户"))
@@ -360,3 +371,7 @@ class Ui_MainWindow(object):
     def open_register(self):
         register_window = Register_Window()
         register_window.exec_()
+
+    def jump_buy(self):
+        jump_buy_window = Jump_Buy_Window()
+        jump_buy_window.exec_()
