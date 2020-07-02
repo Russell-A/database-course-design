@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>479</width>
-    <height>319</height>
+    <width>900</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,66 +23,128 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QLabel" name="label_hbbh">
+        <widget class="QLabel" name="label_flight_number">
          <property name="text">
-          <string>航班编号</string>
+          <string>航班编号：</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_2"/>
+        <widget class="QLineEdit" name="lineEdit_flight_number"/>
        </item>
       </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QLabel" name="label_departure_time">
          <property name="text">
-          <string>计划出发时间</string>
+          <string>计划出发时间：</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_3"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_arrival_transit_time">
-         <property name="text">
-          <string>计划到达经停机场时间</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_departure_transit_time">
-         <property name="text">
-          <string>计划从经停机场出发时间</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_4"/>
+        <widget class="QDateTimeEdit" name="dateTimeEdit_departure_time"/>
        </item>
        <item>
         <widget class="QLabel" name="label_arrival_time">
          <property name="text">
-          <string>计划到达时间</string>
+          <string>计划到达时间：</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_6"/>
+        <widget class="QDateTimeEdit" name="dateTimeEdit_arrival_time"/>
        </item>
       </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox_transit">
+       <property name="text">
+        <string>是否经停？</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_arrival_transit_time">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>计划到达经停机场时间：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDateTimeEdit" name="dateTimeEdit_arrival_transit_time"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_departure_transit_time">
+         <property name="text">
+          <string>计划从经停机场出发时间：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDateTimeEdit" name="dateTimeEdit_departure_transit_time"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QLabel" name="label_departure_transit">
@@ -96,34 +158,47 @@
        <item>
         <widget class="QLabel" name="label_price_economy_departure_transit">
          <property name="text">
-          <string>经济舱票价</string>
+          <string>经济舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_5"/>
+        <widget class="QLineEdit" name="lineEdit_price_economy_departure_transit"/>
        </item>
        <item>
         <widget class="QLabel" name="label_price_business_departure_transit">
          <property name="text">
-          <string>商务舱票价</string>
+          <string>商务舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_7"/>
+        <widget class="QLineEdit" name="lineEdit_price_business_departure_transit"/>
        </item>
        <item>
         <widget class="QLabel" name="label_price_first_departure_transit">
          <property name="text">
-          <string>头等舱票价</string>
+          <string>头等舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_8"/>
+        <widget class="QLineEdit" name="lineEdit_price_first_departure_transit"/>
        </item>
       </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QLabel" name="label_transit_arrival">
@@ -137,34 +212,47 @@
        <item>
         <widget class="QLabel" name="label_price_economy_transit_arrival">
          <property name="text">
-          <string>经济舱票价</string>
+          <string>经济舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_10"/>
+        <widget class="QLineEdit" name="lineEdit_price_economy_transit_arrival"/>
        </item>
        <item>
         <widget class="QLabel" name="label_price_business_transit_arrival">
          <property name="text">
-          <string>商务舱票价</string>
+          <string>商务舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_11"/>
+        <widget class="QLineEdit" name="lineEdit_price_business_transit_arrival"/>
        </item>
        <item>
         <widget class="QLabel" name="label_price_first_transit_arrival">
          <property name="text">
-          <string>头等舱票价</string>
+          <string>头等舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_9"/>
+        <widget class="QLineEdit" name="lineEdit_price_first_transit_arrival"/>
        </item>
       </layout>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QLabel" name="label_departure_arrival">
@@ -178,37 +266,50 @@
        <item>
         <widget class="QLabel" name="label_price_economy_departure_arrival">
          <property name="text">
-          <string>经济舱票价</string>
+          <string>经济舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_12"/>
+        <widget class="QLineEdit" name="lineEdit_price_economy_departure_arrival"/>
        </item>
        <item>
         <widget class="QLabel" name="label_price_business_departure_arrival">
          <property name="text">
-          <string>商务舱票价</string>
+          <string>商务舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_13"/>
+        <widget class="QLineEdit" name="lineEdit_price_business_departure_arrival"/>
        </item>
        <item>
         <widget class="QLabel" name="label_price_first_departure_arrival">
          <property name="text">
-          <string>头等舱票价</string>
+          <string>头等舱票价:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_14"/>
+        <widget class="QLineEdit" name="lineEdit_price_first_departure_arrival"/>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_insert">
        <property name="text">
         <string>添加</string>
        </property>
@@ -219,5 +320,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBox_transit</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>dateTimeEdit_arrival_transit_time</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>186</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>252</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_transit</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>dateTimeEdit_departure_transit_time</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>679</x>
+     <y>183</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>716</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

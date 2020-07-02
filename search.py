@@ -17,27 +17,16 @@ import search
 import register_win
 import register_fail
 import jump_buy
-
-class Register_Window(QDialog, register.Ui_Dialog):
-    def __init__(self, parent = None):
-        super(Register_Window, self).__init__(parent)
-        self.setupUi(self)
-
-class Login_Window(QDialog, login.Ui_Dialog):
-    def __init__(self, parent = None):
-        super(Login_Window, self).__init__(parent)
-        self.setupUi(self)
-
-class Jump_Buy_Window(QDialog, jump_buy.Ui_Dialog_jump_buy):
-    def __init__(self, parent=None):
-        super(Jump_Buy_Window, self).__init__(parent)
-        self.setupUi(self)
+import add_flight
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1600, 900)
         MainWindow.setMinimumSize(QtCore.QSize(567, 384))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("flight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -209,15 +198,15 @@ class Ui_MainWindow(object):
         self.action_buy.setObjectName("action_buy")
         self.actiond_my_ticket = QtWidgets.QAction(MainWindow)
         self.actiond_my_ticket.setObjectName("actiond_my_ticket")
-        self.action_add_data = QtWidgets.QAction(MainWindow)
-        self.action_add_data.setObjectName("action_add_data")
+        self.action_add_flight = QtWidgets.QAction(MainWindow)
+        self.action_add_flight.setObjectName("action_add_flight")
         self.actionlogin = QtWidgets.QAction(MainWindow)
         self.actionlogin.setObjectName("actionlogin")
         self.menu_register_login.addAction(self.actionregister)
         self.menu_register_login.addAction(self.actionlogin)
         self.menu_user.addAction(self.action_buy)
         self.menu_user.addAction(self.actiond_my_ticket)
-        self.menu_administrator.addAction(self.action_add_data)
+        self.menu_administrator.addAction(self.action_add_flight)
         self.menu_function.addAction(self.menu_user.menuAction())
         self.menu_function.addAction(self.menu_administrator.menuAction())
         self.menubar.addAction(self.menu_register_login.menuAction())
@@ -230,6 +219,7 @@ class Ui_MainWindow(object):
         self.actionregister.triggered.connect(self.open_register)
         self.actionlogin.triggered.connect(self.open_login)
         # self.register_2.clicked.connect(self.open_register)
+        self.action_add_flight.triggered.connect(self.open_add_flight)
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -241,11 +231,63 @@ class Ui_MainWindow(object):
     #     child_register, child_register_ui = register.Ui_Dialog.instantiation(register)
     #     child_register_ui.button_connect(child_register, self.register_2)
 
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label_departure.setText(_translate("MainWindow", "Departure"))
+        self.comboBox_departure.setCurrentText(_translate("MainWindow", "北京"))
+        self.comboBox_departure.setItemText(0, _translate("MainWindow", "北京"))
+        self.comboBox_departure.setItemText(1, _translate("MainWindow", "成都"))
+        self.comboBox_departure.setItemText(2, _translate("MainWindow", "香港"))
+        self.comboBox_departure.setItemText(3, _translate("MainWindow", "哈尔滨"))
+        self.comboBox_departure.setItemText(4, _translate("MainWindow", "海南"))
+        self.comboBox_departure.setItemText(5, _translate("MainWindow", "上海"))
+        self.comboBox_departure.setItemText(6, _translate("MainWindow", "长春"))
+        self.comboBox_departure.setItemText(7, _translate("MainWindow", "兰州"))
+        self.comboBox_departure.setItemText(8, _translate("MainWindow", "广州"))
+        self.comboBox_departure.setItemText(9, _translate("MainWindow", "长沙"))
+        self.comboBox_departure.setItemText(10, _translate("MainWindow", "南昌"))
+        self.label_destination.setText(_translate("MainWindow", "Destination"))
+        self.comboBox_destination.setItemText(0, _translate("MainWindow", "北京"))
+        self.comboBox_destination.setItemText(1, _translate("MainWindow", "成都"))
+        self.comboBox_destination.setItemText(2, _translate("MainWindow", "香港"))
+        self.comboBox_destination.setItemText(3, _translate("MainWindow", "哈尔滨"))
+        self.comboBox_destination.setItemText(4, _translate("MainWindow", "海南"))
+        self.comboBox_destination.setItemText(5, _translate("MainWindow", "上海"))
+        self.comboBox_destination.setItemText(6, _translate("MainWindow", "长春"))
+        self.comboBox_destination.setItemText(7, _translate("MainWindow", "兰州"))
+        self.comboBox_destination.setItemText(8, _translate("MainWindow", "广州"))
+        self.comboBox_destination.setItemText(9, _translate("MainWindow", "长沙"))
+        self.comboBox_destination.setItemText(10, _translate("MainWindow", "南昌"))
+        self.label_date.setText(_translate("MainWindow", "DATE"))
+        self.label_class.setText(_translate("MainWindow", "Class"))
+        self.comboBox_class.setItemText(0, _translate("MainWindow", "头等舱"))
+        self.comboBox_class.setItemText(1, _translate("MainWindow", "商务舱"))
+        self.comboBox_class.setItemText(2, _translate("MainWindow", "经济舱"))
+        self.Search.setText(_translate("MainWindow", "Search"))
+        self.pushbutton_buy.setText(_translate("MainWindow", "Buy"))
+        self.label_departure_arrival.setText(_translate("MainWindow", "出发 - 到达："))
+        self.label_departure_transit.setText(_translate("MainWindow", "出发 - 经停："))
+        self.label_transit_arrival.setText(_translate("MainWindow", "经停 - 到达："))
+        self.menu_register_login.setTitle(_translate("MainWindow", "注册"))
+        self.menu_function.setTitle(_translate("MainWindow", "功能"))
+        self.menu_user.setTitle(_translate("MainWindow", "用户"))
+        self.menu_administrator.setTitle(_translate("MainWindow", "管理员"))
+        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
+        self.toolBar_2.setWindowTitle(_translate("MainWindow", "toolBar_2"))
+        self.toolBar_3.setWindowTitle(_translate("MainWindow", "toolBar_3"))
+        self.actionregister.setText(_translate("MainWindow", "用户注册"))
+        self.actionbuy.setText(_translate("MainWindow", "机票购买"))
+        self.action_buy.setText(_translate("MainWindow", "机票购买"))
+        self.actiond_my_ticket.setText(_translate("MainWindow", "我的机票"))
+        self.action_add_flight.setText(_translate("MainWindow", "添加航程"))
+        self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
+
     def searchresult(self):
         query_flight_dt = QSqlQuery()
         query_flight_dt.prepare('SELECT 航班编号 FROM 航班 '
-                             'WHERE 航班.出发机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
-                             'and 航班.经停机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
+                                'WHERE 航班.出发机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
+                                'and 航班.经停机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
         query_flight_dt.bindValue(":departure", self.comboBox_departure.currentText())
         query_flight_dt.bindValue(":destination", self.comboBox_destination.currentText())  # 绑定占位符和相应的功能
         query_flight_dt.exec_()
@@ -261,7 +303,8 @@ class Ui_MainWindow(object):
         self.tableView_departure_transit.setModel(self.model1)
         self.model1.setTable('飞行计划安排')
         self.model1.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-经停）剩余座位] > 0 "
-                              % (flight_dt, self.dateEdit.date().toString("yyyy-MM-dd"), self.comboBox_class.currentText()))
+                              % (flight_dt, self.dateEdit.date().toString("yyyy-MM-dd"),
+                                 self.comboBox_class.currentText()))
         self.model1.select()
 
         self.tableView_departure_transit.hideColumn(4)
@@ -288,22 +331,21 @@ class Ui_MainWindow(object):
             self.tableView_departure_transit.hideColumn(22)
             self.tableView_departure_transit.hideColumn(13)
             self.tableView_departure_transit.hideColumn(14)
-        else :
+        else:
             self.tableView_departure_transit.hideColumn(16)
             self.tableView_departure_transit.hideColumn(22)
             self.tableView_departure_transit.hideColumn(12)
             self.tableView_departure_transit.hideColumn(14)
 
-
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(0,QHeaderView.Interactive)
+        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(2, QHeaderView.Interactive)
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(3, QHeaderView.Interactive)
-        self.tableView_departure_transit.setColumnWidth(0,90)
-        self.tableView_departure_transit.setColumnWidth(1,90)
-        self.tableView_departure_transit.setColumnWidth(2,200)
-        self.tableView_departure_transit.setColumnWidth(3,210)
+        self.tableView_departure_transit.setColumnWidth(0, 90)
+        self.tableView_departure_transit.setColumnWidth(1, 90)
+        self.tableView_departure_transit.setColumnWidth(2, 200)
+        self.tableView_departure_transit.setColumnWidth(3, 210)
         self.tableView_departure_transit.show()
 
         query_flight = QSqlQuery()  # 新建QSqlQuery对象
@@ -325,7 +367,8 @@ class Ui_MainWindow(object):
         self.tableView_departure_arrival.setModel(self.model)  # 绑定到tableView对象上
         self.model.setTable('飞行计划安排')  # 相当于 from 语句
         self.model.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-到达）剩余座位] > 0 "
-                             % (flight, self.dateEdit.date().toString("yyyy-MM-dd"), self.comboBox_class.currentText()))  # 相当于where语句
+                             % (flight, self.dateEdit.date().toString("yyyy-MM-dd"),
+                                self.comboBox_class.currentText()))  # 相当于where语句
         # self.model.setFilter("DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0" % (self.dateEdit.date().toString("yyyy-MM-dd") ))
 
         # print(self.model.filter())
@@ -354,23 +397,22 @@ class Ui_MainWindow(object):
             self.tableView_departure_arrival.hideColumn(18)
             self.tableView_departure_arrival.hideColumn(7)
             self.tableView_departure_arrival.hideColumn(8)
-        else :
+        else:
             self.tableView_departure_arrival.hideColumn(15)
             self.tableView_departure_arrival.hideColumn(21)
             self.tableView_departure_arrival.hideColumn(6)
             self.tableView_departure_arrival.hideColumn(8)
 
-
         # self.tableView_departure_arrival.setColumnWidth(3,200)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(0,QHeaderView.Interactive)
+        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(2, QHeaderView.Interactive)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(5, QHeaderView.Interactive)
-        self.tableView_departure_arrival.setColumnWidth(0,90)
-        self.tableView_departure_arrival.setColumnWidth(1,90)
-        self.tableView_departure_arrival.setColumnWidth(2,200)
-        self.tableView_departure_arrival.setColumnWidth(5,190)
+        self.tableView_departure_arrival.setColumnWidth(0, 90)
+        self.tableView_departure_arrival.setColumnWidth(1, 90)
+        self.tableView_departure_arrival.setColumnWidth(2, 200)
+        self.tableView_departure_arrival.setColumnWidth(5, 190)
 
         self.tableView_departure_arrival.show()  # 显示
 
@@ -440,58 +482,6 @@ class Ui_MainWindow(object):
         self.tableView_transit_destination.setColumnWidth(5, 190)
         self.tableView_transit_destination.show()
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_departure.setText(_translate("MainWindow", "Departure"))
-        self.comboBox_departure.setCurrentText(_translate("MainWindow", "北京"))
-        self.comboBox_departure.setItemText(0, _translate("MainWindow", "北京"))
-        self.comboBox_departure.setItemText(1, _translate("MainWindow", "成都"))
-        self.comboBox_departure.setItemText(2, _translate("MainWindow", "香港"))
-        self.comboBox_departure.setItemText(3, _translate("MainWindow", "哈尔滨"))
-        self.comboBox_departure.setItemText(4, _translate("MainWindow", "海南"))
-        self.comboBox_departure.setItemText(5, _translate("MainWindow", "上海"))
-        self.comboBox_departure.setItemText(6, _translate("MainWindow", "长春"))
-        self.comboBox_departure.setItemText(7, _translate("MainWindow", "兰州"))
-        self.comboBox_departure.setItemText(8, _translate("MainWindow", "广州"))
-        self.comboBox_departure.setItemText(9, _translate("MainWindow", "长沙"))
-        self.comboBox_departure.setItemText(10, _translate("MainWindow", "南昌"))
-        self.label_destination.setText(_translate("MainWindow", "Destination"))
-        self.comboBox_destination.setItemText(0, _translate("MainWindow", "北京"))
-        self.comboBox_destination.setItemText(1, _translate("MainWindow", "成都"))
-        self.comboBox_destination.setItemText(2, _translate("MainWindow", "香港"))
-        self.comboBox_destination.setItemText(3, _translate("MainWindow", "哈尔滨"))
-        self.comboBox_destination.setItemText(4, _translate("MainWindow", "海南"))
-        self.comboBox_destination.setItemText(5, _translate("MainWindow", "上海"))
-        self.comboBox_destination.setItemText(6, _translate("MainWindow", "长春"))
-        self.comboBox_destination.setItemText(7, _translate("MainWindow", "兰州"))
-        self.comboBox_destination.setItemText(8, _translate("MainWindow", "广州"))
-        self.comboBox_destination.setItemText(9, _translate("MainWindow", "长沙"))
-        self.comboBox_destination.setItemText(10, _translate("MainWindow", "南昌"))
-        self.label_date.setText(_translate("MainWindow", "DATE"))
-        self.label_class.setText(_translate("MainWindow", "Class"))
-        self.comboBox_class.setItemText(0, _translate("MainWindow", "头等舱"))
-        self.comboBox_class.setItemText(1, _translate("MainWindow", "商务舱"))
-        self.comboBox_class.setItemText(2, _translate("MainWindow", "经济舱"))
-        self.Search.setText(_translate("MainWindow", "Search"))
-        self.pushbutton_buy.setText(_translate("MainWindow", "Buy"))
-        self.label_departure_arrival.setText(_translate("MainWindow", "出发 - 到达："))
-        self.label_departure_transit.setText(_translate("MainWindow", "出发 - 经停："))
-        self.label_transit_arrival.setText(_translate("MainWindow", "经停 - 到达："))
-        self.menu_register_login.setTitle(_translate("MainWindow", "注册"))
-        self.menu_function.setTitle(_translate("MainWindow", "功能"))
-        self.menu_user.setTitle(_translate("MainWindow", "用户"))
-        self.menu_administrator.setTitle(_translate("MainWindow", "管理员"))
-        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
-        self.toolBar_2.setWindowTitle(_translate("MainWindow", "toolBar_2"))
-        self.toolBar_3.setWindowTitle(_translate("MainWindow", "toolBar_3"))
-        self.actionregister.setText(_translate("MainWindow", "用户注册"))
-        self.actionbuy.setText(_translate("MainWindow", "机票购买"))
-        self.action_buy.setText(_translate("MainWindow", "机票购买"))
-        self.actiond_my_ticket.setText(_translate("MainWindow", "我的机票"))
-        self.action_add_data.setText(_translate("MainWindow", "添加数据"))
-        self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
-
     def open_login(self):
         login_window = Login_Window()
         login_window.exec_()
@@ -503,3 +493,27 @@ class Ui_MainWindow(object):
     def jump_buy(self):
         jump_buy_window = Jump_Buy_Window()
         jump_buy_window.exec_()
+
+    def open_add_flight(self):
+        add_flight_window = Add_Flight_Window();
+        add_flight_window.exec_()
+
+class Register_Window(QDialog, register.Ui_Dialog):
+    def __init__(self, parent = None):
+        super(Register_Window, self).__init__(parent)
+        self.setupUi(self)
+
+class Login_Window(QDialog, login.Ui_Dialog):
+    def __init__(self, parent = None):
+        super(Login_Window, self).__init__(parent)
+        self.setupUi(self)
+
+class Jump_Buy_Window(QDialog, jump_buy.Ui_Dialog_jump_buy):
+    def __init__(self, parent=None):
+        super(Jump_Buy_Window, self).__init__(parent)
+        self.setupUi(self)
+
+class Add_Flight_Window(QDialog, add_flight.Ui_Dialog):
+    def __init__(self,parent = None):
+        super(Add_Flight_Window, self).__init__(parent)
+        self.setupUi(self)

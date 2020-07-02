@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>flight.png</normaloff>flight.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -397,7 +401,7 @@
      <property name="title">
       <string>管理员</string>
      </property>
-     <addaction name="action_add_data"/>
+     <addaction name="action_add_flight"/>
     </widget>
     <addaction name="menu_user"/>
     <addaction name="menu_administrator"/>
@@ -459,9 +463,9 @@
     <string>我的机票</string>
    </property>
   </action>
-  <action name="action_add_data">
+  <action name="action_add_flight">
    <property name="text">
-    <string>添加数据</string>
+    <string>添加航程</string>
    </property>
   </action>
   <action name="actionlogin">

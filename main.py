@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
+import PyQt5.QtGui
 # 在这里加上所有的文件
 from search import *
 import register
@@ -68,6 +69,8 @@ if __name__ == '__main__':
     # 按钮的绑定
     # myWin.login.clicked.connect(login_window.show)
     # myWin.register_2.clicked.connect(register_window.show)
+
+    myWin.setWindowIcon(QtGui.QIcon("flight.ico"))
 
     myWin.show()
     sys.exit(app.exec_())
