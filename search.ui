@@ -266,6 +266,9 @@
               <day>1</day>
              </datetime>
             </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
