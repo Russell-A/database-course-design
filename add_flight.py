@@ -156,7 +156,26 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
         self.pushButton_insert.clicked.connect(self.Insert_Flight)
+        self.checkBox_transit.stateChanged.connect(self.transit_change)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def transit_change(self):
+        self.dateTimeEdit_departure_transit_time.setEnabled(not self.dateTimeEdit_departure_transit_time.isEnabled())
+        self.dateTimeEdit_arrival_transit_time.setEnabled(not self.dateTimeEdit_arrival_transit_time.isEnabled())
+        self.lineEdit_price_economy_departure_transit.setEnabled(not self.lineEdit_price_economy_departure_transit.isEnabled())
+        self.lineEdit_price_business_departure_transit.setEnabled(not self.lineEdit_price_business_departure_transit.isEnabled())
+        self.lineEdit_price_first_departure_transit.setEnabled(not self.lineEdit_price_first_departure_transit.isEnabled())
+        self.lineEdit_price_economy_transit_arrival.setEnabled(not self.lineEdit_price_economy_transit_arrival.isEnabled())
+        self.lineEdit_price_business_transit_arrival.setEnabled(not self.lineEdit_price_business_transit_arrival.isEnabled())
+        self.lineEdit_price_first_transit_arrival.setEnabled(not self.lineEdit_price_first_transit_arrival.isEnabled())
+        self.label_departure_transit_time.setEnabled(not self.label_departure_transit_time.isEnabled())
+        self.label_arrival_transit_time.setEnabled(not self.label_arrival_transit_time.isEnabled())
+        self.label_price_economy_departure_transit.setEnabled(not self.label_price_economy_departure_transit.isEnabled())
+        self.label_price_business_departure_transit.setEnabled(not self.label_price_business_departure_transit.isEnabled())
+        self.label_price_first_departure_transit.setEnabled(not self.label_price_first_departure_transit.isEnabled())
+        self.label_price_economy_transit_arrival.setEnabled(not self.label_price_economy_transit_arrival.isEnabled())
+        self.label_price_business_transit_arrival.setEnabled(not self.label_price_business_transit_arrival.isEnabled())
+        self.label_price_first_transit_arrival.setEnabled(not self.label_price_first_transit_arrival.isEnabled())
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -164,7 +183,7 @@ class Ui_Dialog(object):
         self.label_flight_number.setText(_translate("Dialog", "航班编号："))
         self.label_departure_time.setText(_translate("Dialog", "计划出发时间："))
         self.label_arrival_time.setText(_translate("Dialog", "计划到达时间："))
-        self.checkBox_transit.setText(_translate("Dialog", "是否经停？"))
+        self.checkBox_transit.setText(_translate("Dialog", "没有经停"))
         self.label_arrival_transit_time.setText(_translate("Dialog", "计划到达经停机场时间："))
         self.label_departure_transit_time.setText(_translate("Dialog", "计划从经停机场出发时间："))
         self.label_departure_transit.setText(_translate("Dialog", "出发-经停："))

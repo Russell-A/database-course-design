@@ -62,6 +62,7 @@ class Ui_Dialog(object):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
         self.login.clicked.connect(self.login_check)
+        self.cancel.clicked.connect(self.window_close)
         self.user_name.returnPressed.connect(self.login_check)
         self.password.returnPressed.connect(self.login_check)
 
@@ -100,9 +101,10 @@ class Ui_Dialog(object):
                 #跳转到后续用户窗口
                 else:
                     print(QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Yes))
-
-
             else:
                 print(QMessageBox.information(self, "提示", "密码错误!", QMessageBox.Yes))
         return
+
+    def window_close(self):
+        self.close()
 #添加后续窗口
