@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'add_flight.ui'
+# Form implementation generated from reading ui file add_flight.ui
 #
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
+import PyQt5.QtSql
+from PyQt5.QtWidgets import QMessageBox
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -153,8 +155,7 @@ class Ui_Dialog(object):
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.retranslateUi(Dialog)
-        self.checkBox_transit.stateChanged['int'].connect(self.dateTimeEdit_arrival_transit_time.clear)
-        self.checkBox_transit.stateChanged['int'].connect(self.dateTimeEdit_departure_transit_time.clear)
+        self.pushButton_insert.clicked.connect(self.Insert_Flight)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -179,4 +180,72 @@ class Ui_Dialog(object):
         self.label_price_business_departure_arrival.setText(_translate("Dialog", "商务舱票价:"))
         self.label_price_first_departure_arrival.setText(_translate("Dialog", "头等舱票价:"))
         self.pushButton_insert.setText(_translate("Dialog", "添加"))
+
+
+    def Insert_Flight(self):
+        query = QtSql.QSqlQuery()
+        query.prepare("INSERT INTO 飞行计划安排(航班编号, 计划出发时间, 计划到达经停机场时间, 计划从经停机场出发时间,计划到达时间, "
+                      "[票价（开始-到达，经济舱）], [票价（开始-经停，经济舱）], [票价（经停-到达，经济舱）],"
+                      "[票价（开始-到达，商务舱）], [票价（开始-经停，商务舱）], [票价（经停-到达，商务舱）], "
+                      "[票价（开始-到达，头等舱）], [票价（开始-经停，头等舱）], [票价（经停-到达，头等舱）])"
+                      "VALUES(:flight_number, :plan_departure, :plan_transit_arrival,  :plan_transit_departure ,  :plan_arrival ,"
+                      " :price_departure_arrival_economy ,  :price_departure_transit_economy ,  :price_transit_arrival_economy , "
+                      " :price_departure_arrival_business ,  :price_departure_transit_business ,  :price_transit_arrival_business , "
+                      " :price_departure_arrival_first ,  :price_departure_transit_first ,  :price_transit_arrival_first )" )
+        query.bindValue(":flight_number", self.lineEdit_flight_number.text())
+        query.bindValue(":plan_departure", self.dateTimeEdit_departure_time.dateTime().toString("yyyy-MM-dd HH:mm"))
+        query.bindValue(":plan_arrival", self.dateTimeEdit_arrival_time.dateTime().toString("yyyy-MM-dd HH:mm"))
+        if self.checkBox_transit.isChecked():
+            query.bindValue(":plan_transit_arrival", self.dateTimeEdit_arrival_transit_time.dateTime().toString("yyyy-MM-dd HH:mm") )
+            query.bindValue(":plan_transit_departure", self.dateTimeEdit_departure_transit_time.dateTime().toString("yyyy-MM-dd HH:mm") )
+        else:
+            query.bindValue(":plan_transit_arrival", QtCore.QVariant())
+            query.bindValue(":plan_transit_departure", QtCore.QVariant())
+        if self.lineEdit_price_economy_departure_arrival.text() == '':
+            query.bindValue(":price_departure_arrival_economy", QtCore.QVariant())
+        else:
+            query.bindValue(":price_departure_arrival_economy", self.lineEdit_price_economy_departure_arrival.text())
+        if self.lineEdit_price_business_departure_arrival.text() == '':
+            query.bindValue(":price_departure_arrival_business", QtCore.QVariant())
+        else:
+            query.bindValue(":price_departure_arrival_business", self.lineEdit_price_business_departure_arrival.text())
+        if self.lineEdit_price_first_departure_arrival.text() == '':
+            query.bindValue(":price_departure_arrival_first", QtCore.QVariant())
+        else:
+            query.bindValue(":price_departure_arrival_first", self.lineEdit_price_first_departure_arrival.text())
+        if self.lineEdit_price_economy_departure_transit.text() == '':
+            query.bindValue(":price_departure_transit_economy", QtCore.QVariant())
+        else:
+            query.bindValue(":price_departure_transit_economy", self.lineEdit_price_economy_departure_transit.text())
+        if self.lineEdit_price_business_departure_transit.text() == '':
+            query.bindValue(":price_departure_transit_business", QtCore.QVariant())
+        else:
+            query.bindValue(":price_departure_transit_business", self.lineEdit_price_business_departure_transit.text())
+        if self.lineEdit_price_first_departure_transit.text() == '':
+            query.bindValue(":price_departure_transit_first", QtCore.QVariant())
+        else:
+            query.bindValue(":price_departure_transit_first", self.lineEdit_price_first_departure_transit.text())
+        if self.lineEdit_price_economy_transit_arrival.text() == '':
+            query.bindValue(":price_transit_arrival_economy", QtCore.QVariant())
+        else:
+            query.bindValue(":price_transit_arrival_economy", self.lineEdit_price_economy_transit_arrival.text())
+        if self.lineEdit_price_business_transit_arrival.text() == '':
+            query.bindValue(":price_transit_arrival_business", QtCore.QVariant())
+        else:
+            query.bindValue(":price_transit_arrival_business", self.lineEdit_price_business_transit_arrival.text())
+        if self.lineEdit_price_first_transit_arrival.text() == '':
+            query.bindValue(":price_transit_arrival_first", QtCore.QVariant())
+        else:
+            query.bindValue(":price_transit_arrival_first", self.lineEdit_price_first_transit_arrival.text())
+        if query.exec_():
+            print(QMessageBox.information(self, "提示", "添加数据成功!", QMessageBox.Ok))
+        else:
+            print(QMessageBox.warning(self, "提示", "添加数据失败!", QMessageBox.Ok))
+
+
+
+
+
+
+
 
