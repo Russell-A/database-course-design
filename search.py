@@ -235,6 +235,7 @@ class Ui_MainWindow(object):
         self.menu_function.addAction(self.menu_administrator.menuAction())
         self.menubar.addAction(self.menu_register_login.menuAction())
         self.menubar.addAction(self.menu_function.menuAction())
+        self.dateEdit.setCalendarPopup(True)
 
         self.retranslateUi(MainWindow)
         self.Search.clicked.connect(self.searchresult)
