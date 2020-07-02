@@ -70,7 +70,5 @@ if __name__ == '__main__':
     # myWin.login.clicked.connect(login_window.show)
     # myWin.register_2.clicked.connect(register_window.show)
 
-    myWin.setWindowIcon(QtGui.QIcon("flight.ico"))
-
     myWin.show()
     sys.exit(app.exec_())
