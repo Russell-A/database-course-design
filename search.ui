@@ -15,20 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0">
-     <widget class="QPushButton" name="login">
-      <property name="text">
-       <string>登录</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="register_2">
-      <property name="text">
-       <string>注册</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -314,6 +300,27 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="register_2">
+          <property name="text">
+           <string>注册</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="login">
+          <property name="text">
+           <string>登录</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushbutton_buy">
+          <property name="text">
+           <string>Buy</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -330,23 +337,40 @@
        </spacer>
       </item>
       <item>
-       <widget class="QTableView" name="output_search">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_departure_arrival">
+          <property name="text">
+           <string>出发 - 到达：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableView_departure_arrival"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_departure_transit">
+          <property name="text">
+           <string>出发 - 经停：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableView_departure_transit"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_transit_arrival">
+          <property name="text">
+           <string>经停 - 到达：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableview_transit_destination"/>
+        </item>
+       </layout>
       </item>
      </layout>
-    </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="pushbutton_buy">
-      <property name="text">
-       <string>Buy</string>
-      </property>
-     </widget>
     </item>
    </layout>
   </widget>
@@ -449,22 +473,5 @@
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>Search</sender>
-   <signal>clicked()</signal>
-   <receiver>output_search</receiver>
-   <slot>clearSelection()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>254</x>
-     <y>294</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>316</x>
-     <y>234</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

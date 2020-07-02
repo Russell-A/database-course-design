@@ -41,12 +41,6 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
-        self.login = QtWidgets.QPushButton(self.centralwidget)
-        self.login.setObjectName("login")
-        self.gridLayout.addWidget(self.login, 2, 0, 1, 1)
-        self.register_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.register_2.setObjectName("register_2")
-        self.gridLayout.addWidget(self.register_2, 1, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -153,21 +147,40 @@ class Ui_MainWindow(object):
         self.Search = QtWidgets.QPushButton(self.centralwidget)
         self.Search.setObjectName("Search")
         self.verticalLayout.addWidget(self.Search)
+        self.register_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.register_2.setObjectName("register_2")
+        self.verticalLayout.addWidget(self.register_2)
+        self.login = QtWidgets.QPushButton(self.centralwidget)
+        self.login.setObjectName("login")
+        self.verticalLayout.addWidget(self.login)
+        self.pushbutton_buy = QtWidgets.QPushButton(self.centralwidget)
+        self.pushbutton_buy.setObjectName("pushbutton_buy")
+        self.verticalLayout.addWidget(self.pushbutton_buy)
         self.horizontalLayout.addLayout(self.verticalLayout)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.horizontalLayout.addItem(spacerItem)
-        self.output_search = QtWidgets.QTableView(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.output_search.sizePolicy().hasHeightForWidth())
-        self.output_search.setSizePolicy(sizePolicy)
-        self.output_search.setObjectName("output_search")
-        self.horizontalLayout.addWidget(self.output_search)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.label_departure_arrival = QtWidgets.QLabel(self.centralwidget)
+        self.label_departure_arrival.setObjectName("label_departure_arrival")
+        self.verticalLayout_2.addWidget(self.label_departure_arrival)
+        self.tableView_departure_arrival = QtWidgets.QTableView(self.centralwidget)
+        self.tableView_departure_arrival.setObjectName("tableView_departure_arrival")
+        self.verticalLayout_2.addWidget(self.tableView_departure_arrival)
+        self.label_departure_transit = QtWidgets.QLabel(self.centralwidget)
+        self.label_departure_transit.setObjectName("label_departure_transit")
+        self.verticalLayout_2.addWidget(self.label_departure_transit)
+        self.tableView_departure_transit = QtWidgets.QTableView(self.centralwidget)
+        self.tableView_departure_transit.setObjectName("tableView_departure_transit")
+        self.verticalLayout_2.addWidget(self.tableView_departure_transit)
+        self.label_transit_arrival = QtWidgets.QLabel(self.centralwidget)
+        self.label_transit_arrival.setObjectName("label_transit_arrival")
+        self.verticalLayout_2.addWidget(self.label_transit_arrival)
+        self.tableView_transit_destination = QtWidgets.QTableView(self.centralwidget)
+        self.tableView_transit_destination.setObjectName("tableView_transit_destination")
+        self.verticalLayout_2.addWidget(self.tableView_transit_destination)
+        self.horizontalLayout.addLayout(self.verticalLayout_2)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
-        self.pushbutton_buy = QtWidgets.QPushButton(self.centralwidget)
-        self.pushbutton_buy.setObjectName("pushbutton_buy")
-        self.gridLayout.addWidget(self.pushbutton_buy, 3, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 567, 21))
@@ -229,21 +242,69 @@ class Ui_MainWindow(object):
     #     child_register_ui.button_connect(child_register, self.register_2)
 
     def searchresult(self):
-        # query_departure = QSqlQuery()
-        # query_departure.prepare("SELECT 机场代码 FROM 机场 where 所在城市 = :departure")
-        # query_departure.bindValue(":departure", self.comboBox_departure.currentText())
-        # query_departure.exec_()
-        # list_departure = list()
-        # while query_departure.next():
-        #     print(query_departure.value(0))
-        #
-        # query_destination = QSqlQuery()
-        # query_destination.prepare("SELECT 机场代码 FROM 机场 where 所在城市 = :destination")
-        # query_destination.bindValue(":destination", self.comboBox_destination.currentText())
-        # query_destination.exec_()
-        # list_destination = list()
-        # while query_destination.next():
-        #     print(query_destination.value(0))
+        query_flight_dt = QSqlQuery()
+        query_flight_dt.prepare('SELECT 航班编号 FROM 航班 '
+                             'WHERE 航班.出发机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
+                             'and 航班.经停机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
+        query_flight_dt.bindValue(":departure", self.comboBox_departure.currentText())
+        query_flight_dt.bindValue(":destination", self.comboBox_destination.currentText())  # 绑定占位符和相应的功能
+        query_flight_dt.exec_()
+        flight_dt = '('
+        while query_flight_dt.next():
+            flight_dt += "'" + query_flight_dt.value(0) + "'"
+            if query_flight_dt.next():
+                flight_dt += ","
+                query_flight_dt.previous()
+        flight_dt += ")"  # flight ： (A, B, ....)
+
+        self.model1 = QSqlTableModel()
+        self.tableView_departure_transit.setModel(self.model1)
+        self.model1.setTable('飞行计划安排')
+        self.model1.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-经停）剩余座位] > 0 "
+                              % (flight_dt, self.dateEdit.date().toString("yyyy-MM-dd"), self.comboBox_class.currentText()))
+        self.model1.select()
+
+        self.tableView_departure_transit.hideColumn(4)
+        self.tableView_departure_transit.hideColumn(5)
+        self.tableView_departure_transit.hideColumn(6)
+        self.tableView_departure_transit.hideColumn(7)
+        self.tableView_departure_transit.hideColumn(8)
+        self.tableView_departure_transit.hideColumn(9)
+        self.tableView_departure_transit.hideColumn(10)
+        self.tableView_departure_transit.hideColumn(11)
+        self.tableView_departure_transit.hideColumn(15)
+        self.tableView_departure_transit.hideColumn(17)
+        self.tableView_departure_transit.hideColumn(18)
+        self.tableView_departure_transit.hideColumn(20)
+        self.tableView_departure_transit.hideColumn(21)
+        self.tableView_departure_transit.hideColumn(23)
+        if self.comboBox_class.currentText() == "头等舱":
+            self.tableView_departure_transit.hideColumn(16)
+            self.tableView_departure_transit.hideColumn(19)
+            self.tableView_departure_transit.hideColumn(12)
+            self.tableView_departure_transit.hideColumn(13)
+        elif self.comboBox_class.currentText() == "经济舱":
+            self.tableView_departure_transit.hideColumn(19)
+            self.tableView_departure_transit.hideColumn(22)
+            self.tableView_departure_transit.hideColumn(13)
+            self.tableView_departure_transit.hideColumn(14)
+        else :
+            self.tableView_departure_transit.hideColumn(16)
+            self.tableView_departure_transit.hideColumn(22)
+            self.tableView_departure_transit.hideColumn(12)
+            self.tableView_departure_transit.hideColumn(14)
+
+
+        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(0,QHeaderView.Interactive)
+        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
+        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(2, QHeaderView.Interactive)
+        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(3, QHeaderView.Interactive)
+        self.tableView_departure_transit.setColumnWidth(0,90)
+        self.tableView_departure_transit.setColumnWidth(1,90)
+        self.tableView_departure_transit.setColumnWidth(2,200)
+        self.tableView_departure_transit.setColumnWidth(3,210)
+        self.tableView_departure_transit.show()
 
         query_flight = QSqlQuery()  # 新建QSqlQuery对象
         query_flight.prepare('SELECT 航班编号 FROM 航班 '
@@ -261,58 +322,123 @@ class Ui_MainWindow(object):
         flight += ")"  # flight ： (A, B, ....)
 
         self.model = QSqlTableModel()  # 新建SQLTableModel 对象
-        self.output_search.setModel(self.model)  # 绑定到tableview对象上
+        self.tableView_departure_arrival.setModel(self.model)  # 绑定到tableView对象上
         self.model.setTable('飞行计划安排')  # 相当于 from 语句
-        self.model.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-到达） 剩余座位] > 0 "
+        self.model.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-到达）剩余座位] > 0 "
                              % (flight, self.dateEdit.date().toString("yyyy-MM-dd"), self.comboBox_class.currentText()))  # 相当于where语句
         # self.model.setFilter("DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0" % (self.dateEdit.date().toString("yyyy-MM-dd") ))
 
         # print(self.model.filter())
         self.model.select()  # 执行SQL select
-        self.output_search.hideColumn(3)
-        self.output_search.hideColumn(4)
-        self.output_search.hideColumn(9)
-        self.output_search.hideColumn(10)
-        self.output_search.hideColumn(11)
-        self.output_search.hideColumn(12)
-        self.output_search.hideColumn(13)
-        self.output_search.hideColumn(14)
-        self.output_search.hideColumn(16)
-        self.output_search.hideColumn(17)
-        self.output_search.hideColumn(19)
-        self.output_search.hideColumn(20)
-        self.output_search.hideColumn(22)
-        self.output_search.hideColumn(23)
+        self.tableView_departure_arrival.hideColumn(3)
+        self.tableView_departure_arrival.hideColumn(4)
+        self.tableView_departure_arrival.hideColumn(9)
+        self.tableView_departure_arrival.hideColumn(10)
+        self.tableView_departure_arrival.hideColumn(11)
+        self.tableView_departure_arrival.hideColumn(12)
+        self.tableView_departure_arrival.hideColumn(13)
+        self.tableView_departure_arrival.hideColumn(14)
+        self.tableView_departure_arrival.hideColumn(16)
+        self.tableView_departure_arrival.hideColumn(17)
+        self.tableView_departure_arrival.hideColumn(19)
+        self.tableView_departure_arrival.hideColumn(20)
+        self.tableView_departure_arrival.hideColumn(22)
+        self.tableView_departure_arrival.hideColumn(23)
         if self.comboBox_class.currentText() == "头等舱":
-            self.output_search.hideColumn(15)
-            self.output_search.hideColumn(18)
-            self.output_search.hideColumn(6)
-            self.output_search.hideColumn(7)
+            self.tableView_departure_arrival.hideColumn(15)
+            self.tableView_departure_arrival.hideColumn(18)
+            self.tableView_departure_arrival.hideColumn(6)
+            self.tableView_departure_arrival.hideColumn(7)
         elif self.comboBox_class.currentText() == "经济舱":
-            self.output_search.hideColumn(21)
-            self.output_search.hideColumn(18)
-            self.output_search.hideColumn(7)
-            self.output_search.hideColumn(8)
+            self.tableView_departure_arrival.hideColumn(21)
+            self.tableView_departure_arrival.hideColumn(18)
+            self.tableView_departure_arrival.hideColumn(7)
+            self.tableView_departure_arrival.hideColumn(8)
         else :
-            self.output_search.hideColumn(15)
-            self.output_search.hideColumn(21)
-            self.output_search.hideColumn(6)
-            self.output_search.hideColumn(8)
+            self.tableView_departure_arrival.hideColumn(15)
+            self.tableView_departure_arrival.hideColumn(21)
+            self.tableView_departure_arrival.hideColumn(6)
+            self.tableView_departure_arrival.hideColumn(8)
 
 
-        # self.output_search.setColumnWidth(3,200)
-        self.output_search.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.output_search.horizontalHeader().setSectionResizeMode(0,QHeaderView.Interactive)
-        self.output_search.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
-        self.output_search.horizontalHeader().setSectionResizeMode(2, QHeaderView.Interactive)
-        self.output_search.horizontalHeader().setSectionResizeMode(5, QHeaderView.Interactive)
-        self.output_search.setColumnWidth(0,90)
-        self.output_search.setColumnWidth(1,90)
-        self.output_search.setColumnWidth(2,200)
-        self.output_search.setColumnWidth(5,190)
+        # self.tableView_departure_arrival.setColumnWidth(3,200)
+        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(0,QHeaderView.Interactive)
+        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
+        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(2, QHeaderView.Interactive)
+        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(5, QHeaderView.Interactive)
+        self.tableView_departure_arrival.setColumnWidth(0,90)
+        self.tableView_departure_arrival.setColumnWidth(1,90)
+        self.tableView_departure_arrival.setColumnWidth(2,200)
+        self.tableView_departure_arrival.setColumnWidth(5,190)
 
-        self.output_search.show()  # 显示
+        self.tableView_departure_arrival.show()  # 显示
 
+        query_flight_ta = QSqlQuery()
+        query_flight_ta.prepare('SELECT 航班编号 FROM 航班 '
+                                'WHERE 航班.经停机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
+                                'and 航班.到达机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
+        query_flight_ta.bindValue(":departure", self.comboBox_departure.currentText())
+        query_flight_ta.bindValue(":destination", self.comboBox_destination.currentText())  # 绑定占位符和相应的功能
+        query_flight_ta.exec_()
+        flight_ta = '('
+        while query_flight_ta.next():
+            flight_ta += "'" + query_flight_ta.value(0) + "'"
+            if query_flight_ta.next():
+                flight_ta += ","
+                query_flight_ta.previous()
+        flight_ta += ")"  # flight ： (A, B, ....)
+        print (flight_ta)
+
+        self.model2 = QSqlTableModel()
+        self.tableView_transit_destination.setModel(self.model2)
+        self.model2.setTable('飞行计划安排')
+        self.model2.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（经停-到达）剩余座位] > 0 "
+                              % (flight_ta, self.dateEdit.date().toString("yyyy-MM-dd"),
+                                 self.comboBox_class.currentText()))
+        print(self.model2.filter())
+        self.model2.select()
+
+        self.tableView_transit_destination.hideColumn(2)
+        self.tableView_transit_destination.hideColumn(3)
+        self.tableView_transit_destination.hideColumn(6)
+        self.tableView_transit_destination.hideColumn(7)
+        self.tableView_transit_destination.hideColumn(8)
+        self.tableView_transit_destination.hideColumn(12)
+        self.tableView_transit_destination.hideColumn(13)
+        self.tableView_transit_destination.hideColumn(14)
+        self.tableView_transit_destination.hideColumn(15)
+        self.tableView_transit_destination.hideColumn(16)
+        self.tableView_transit_destination.hideColumn(18)
+        self.tableView_transit_destination.hideColumn(19)
+        self.tableView_transit_destination.hideColumn(21)
+        self.tableView_transit_destination.hideColumn(22)
+        if self.comboBox_class.currentText() == "头等舱":
+            self.tableView_transit_destination.hideColumn(17)
+            self.tableView_transit_destination.hideColumn(20)
+            self.tableView_transit_destination.hideColumn(9)
+            self.tableView_transit_destination.hideColumn(10)
+        elif self.comboBox_class.currentText() == "经济舱":
+            self.tableView_transit_destination.hideColumn(20)
+            self.tableView_transit_destination.hideColumn(23)
+            self.tableView_transit_destination.hideColumn(10)
+            self.tableView_transit_destination.hideColumn(11)
+        else:
+            self.tableView_transit_destination.hideColumn(17)
+            self.tableView_transit_destination.hideColumn(23)
+            self.tableView_transit_destination.hideColumn(9)
+            self.tableView_transit_destination.hideColumn(11)
+        #
+        self.tableView_transit_destination.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableView_transit_destination.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
+        self.tableView_transit_destination.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
+        self.tableView_transit_destination.horizontalHeader().setSectionResizeMode(4, QHeaderView.Interactive)
+        self.tableView_transit_destination.horizontalHeader().setSectionResizeMode(5, QHeaderView.Interactive)
+        self.tableView_transit_destination.setColumnWidth(0, 90)
+        self.tableView_transit_destination.setColumnWidth(1, 90)
+        self.tableView_transit_destination.setColumnWidth(4, 230)
+        self.tableView_transit_destination.setColumnWidth(5, 190)
+        self.tableView_transit_destination.show()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -331,8 +457,8 @@ class Ui_MainWindow(object):
         self.comboBox_departure.setItemText(9, _translate("MainWindow", "长沙"))
         self.comboBox_departure.setItemText(10, _translate("MainWindow", "南昌"))
         self.label_destination.setText(_translate("MainWindow", "Destination"))
-        self.comboBox_destination.setItemText(0, _translate("MainWindow", "成都"))
-        self.comboBox_destination.setItemText(1, _translate("MainWindow", "北京"))
+        self.comboBox_destination.setItemText(0, _translate("MainWindow", "北京"))
+        self.comboBox_destination.setItemText(1, _translate("MainWindow", "成都"))
         self.comboBox_destination.setItemText(2, _translate("MainWindow", "香港"))
         self.comboBox_destination.setItemText(3, _translate("MainWindow", "哈尔滨"))
         self.comboBox_destination.setItemText(4, _translate("MainWindow", "海南"))
@@ -351,6 +477,9 @@ class Ui_MainWindow(object):
         self.register_2.setText(_translate("MainWindow", "注册"))
         self.login.setText(_translate("MainWindow", "登录"))
         self.pushbutton_buy.setText(_translate("MainWindow", "Buy"))
+        self.label_departure_arrival.setText(_translate("MainWindow", "出发 - 到达："))
+        self.label_departure_transit.setText(_translate("MainWindow", "出发 - 经停："))
+        self.label_transit_arrival.setText(_translate("MainWindow", "经停 - 到达："))
         self.menu.setTitle(_translate("MainWindow", "注册"))
         self.menu_2.setTitle(_translate("MainWindow", "功能"))
         self.menu_3.setTitle(_translate("MainWindow", "用户"))
