@@ -8,6 +8,7 @@
 
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QCoreApplication
 import pyodbc
 
 
@@ -90,6 +91,7 @@ class Ui_Dialog_jump_buy(object):
         self.com_class.currentIndexChanged.connect(self.remain_tacket)
         QtCore.QMetaObject.connectSlotsByName(Dialog_jump_buy)
 
+
         # self.pushButton.clicked.connect(self.change)
 
     def retranslateUi(self, Dialog_jump_buy):
@@ -170,7 +172,7 @@ class Ui_Dialog_jump_buy(object):
             reply = QMessageBox.warning(self,
                                         "消息框标题",
                                         "请先填写好信息！",
-                                        QMessageBox.Yes | QMessageBox.No)
+                                        QMessageBox.Ok)
         elif (tacket>0):
             insert_sql = "insert into 订票 values (?,?,?,?,?,?,?,?,?,?,?)"
             result_in = cursor.execute(insert_sql, self.num, dairport, aairport, str(tacket), cart, self.username, name, sex, '成人', str(id), str(tele))
@@ -179,12 +181,32 @@ class Ui_Dialog_jump_buy(object):
             update_sql = "update 飞行计划安排 set [" + cart + state_text[self.state]+"剩余座位] = ?" \
                                                          " where 航程号=?"
             result_up = cursor.execute(update_sql, tacket-1, self.num)
+
+            if (self.state == 0):
+                sql_1 = "update 飞行计划安排 set [" + cart + state_text[1]+"剩余座位] = [" + cart + state_text[1]+"剩余座位]-1"\
+                                                         " where 航程号=?"
+                cursor.execute(sql_1,self.num)
+                sql_2 = "update 飞行计划安排 set [" + cart + state_text[2]+"剩余座位] = [" + cart + state_text[2]+"剩余座位]-1"\
+                                                         " where 航程号=?"
+                cursor.execute(sql_2,self.num)
+            else:
+                sql_1 = "update 飞行计划安排 set [" + cart + state_text[0] + "剩余座位] = [" + cart + state_text[0]+"剩余座位]-1"\
+                                                         " where 航程号=?"
+                cursor.execute(sql_1, self.num)
+
             cursor.commit()
             print('update complete')
+
             reply = QMessageBox.information(self,
                                         "消息框标题",
-                                        "购票成功",
+                                        "购票成功！是否继续买票？",
                                         QMessageBox.Yes | QMessageBox.No)
+            if (reply == QMessageBox.Yes):
+                self.phone_num.setText('')
+                self.identity_num.setText('')
+                self.name.setText('')
+            else:
+                self.close()
         else:
             reply = QMessageBox.warning(self,
                                         "消息框标题",
