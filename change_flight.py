@@ -6,7 +6,8 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
+from PyQt5.QtSql import QSqlTableModel, QSqlQueryModel
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -107,7 +108,64 @@ class Ui_Dialog(object):
         self.horizontalLayout.addLayout(self.horizontalLayout_2)
 
         self.retranslateUi(Dialog)
+        self.radioButton_flight.toggled.connect(self.state_change)
+        self.pushButton_search.clicked.connect(self.search)
+        self.pushButton_submit.clicked.connect(self.submit)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def search(self):
+        if(self.radioButton_flight.isChecked()):
+            flight_no = self.lineEdit_flight_no.text()   # 设置航程号
+            self.model = QtSql.QSqlTableModel()
+            self.model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
+            self.tableView_search.setModel(self.model)   # 绑定table
+            self.model.setTable("飞行计划安排")
+
+            if flight_no == '':
+                if not self.model.select():
+                    QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
+                                                  QtWidgets.QMessageBox.Ok)
+            else:
+                self.model.setFilter("航程号 = %s" % (flight_no))
+                # print(self.model.filter())
+                if not self.model.select():
+                    QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
+                                                  QtWidgets.QMessageBox.Ok)
+            self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+            if self.model.rowCount() == 0:
+                QtWidgets.QMessageBox.information(self, "提示", "未找到符合条件的航程，请重试。", QtWidgets.QMessageBox.Ok)
+                self.pushButton_submit.setEnabled(False)
+            else:
+                self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+                self.tableView_search.show()
+                self.pushButton_submit.setEnabled(True)
+        else:
+            sql = self.textEdit_sql.toPlainText()
+            self.model = QSqlQueryModel()
+            self.model.setQuery("%s" %(sql))
+            self.tableView_search.setModel(self.model)
+            if self.model.lastError().isValid():
+                QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
+                                              QtWidgets.QMessageBox.Ok)
+                self.pushButton_submit.setEnabled(False)
+            else:
+                self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+                self.tableView_search.show()
+                self.pushButton_submit.setEnabled(True)
+
+
+
+    def submit(self):
+        if self.model.submitAll():
+            QtWidgets.QMessageBox.information(self,"提示","修改成功。",QtWidgets.QMessageBox.Ok)
+        else:
+            QtWidgets.QMessageBox.warning(self,"提示","%s" %(self.model.lastError().text()),QtWidgets.QMessageBox.Ok)
+
+
+
+    def state_change(self):
+        self.lineEdit_flight_no.setEnabled(not self.lineEdit_flight_no.isEnabled())
+        self.textEdit_sql.setEnabled(not self.textEdit_sql.isEnabled())
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

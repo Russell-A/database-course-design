@@ -17,31 +17,43 @@ import login
 import register_win
 import register_fail
 import jump_buy
-import add_flight
+import add_flight, change_flight
+
 
 class Register_Window(QDialog, register.Ui_Dialog):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(Register_Window, self).__init__(parent)
         self.setupUi(self)
 
+
+class Change_Flight_Window(QDialog, change_flight.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Change_Flight_Window, self).__init__(parent)
+        self.setupUi(self)
+
+
 class Login_Window(QDialog, login.Ui_Dialog):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(Login_Window, self).__init__(parent)
         self.setupUi(self)
+
 
 class Jump_Buy_Window(QDialog, jump_buy.Ui_Dialog_jump_buy):
     def __init__(self, parent=None):
         super(Jump_Buy_Window, self).__init__(parent)
         self.setupUi(self)
+
+
 class Add_Flight_Window(QDialog, add_flight.Ui_Dialog):
-    def __init__(self,parent = None):
+    def __init__(self, parent=None):
         super(Add_Flight_Window, self).__init__(parent)
         self.setupUi(self)
+
 
 class Ui_MainWindow(object):
     state = -1  # 选中的票的状态，0为出发-目的，1为出发-经停，2为经停-目的，-1为未被选中
     username = ''
-    num = -1 #选中航程号
+    num = -1  # 选中航程号
     index = -1
     power = 0  # 权限0为未登录，1为用户，2为管理员
 
@@ -242,8 +254,9 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_function.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.action_alter_flight.triggered.connect(self.open_change_flight)
         self.Search.clicked.connect(self.searchresult)
-        #self.login.clicked.connect(self.open_login)
+        # self.login.clicked.connect(self.open_login)
         self.pushbutton_buy.clicked.connect(self.jump_buy)
         self.actionregister.triggered.connect(self.open_register)
         self.actionlogin.triggered.connect(self.open_login)
@@ -269,8 +282,8 @@ class Ui_MainWindow(object):
         self.state = -1
         query_flight_dt = QSqlQuery()
         query_flight_dt.prepare('SELECT 航班编号 FROM 航班 '
-                             'WHERE 航班.出发机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
-                             'and 航班.经停机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
+                                'WHERE 航班.出发机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :departure) '
+                                'and 航班.经停机场代码 in (SELECT 机场代码 FROM 机场 where 所在城市 = :destination)')
         query_flight_dt.bindValue(":departure", self.comboBox_departure.currentText())
         query_flight_dt.bindValue(":destination", self.comboBox_destination.currentText())  # 绑定占位符和相应的功能
         query_flight_dt.exec_()
@@ -286,7 +299,8 @@ class Ui_MainWindow(object):
         self.tableView_departure_transit.setModel(self.model1)
         self.model1.setTable('飞行计划安排')
         self.model1.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-经停）剩余座位] > 0 "
-                              % (flight_dt, self.dateEdit.date().toString("yyyy-MM-dd"), self.comboBox_class.currentText()))
+                              % (flight_dt, self.dateEdit.date().toString("yyyy-MM-dd"),
+                                 self.comboBox_class.currentText()))
         self.model1.select()
 
         self.tableView_departure_transit.hideColumn(4)
@@ -313,22 +327,21 @@ class Ui_MainWindow(object):
             self.tableView_departure_transit.hideColumn(22)
             self.tableView_departure_transit.hideColumn(13)
             self.tableView_departure_transit.hideColumn(14)
-        else :
+        else:
             self.tableView_departure_transit.hideColumn(16)
             self.tableView_departure_transit.hideColumn(22)
             self.tableView_departure_transit.hideColumn(12)
             self.tableView_departure_transit.hideColumn(14)
 
-
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(0,QHeaderView.Interactive)
+        self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(2, QHeaderView.Interactive)
         self.tableView_departure_transit.horizontalHeader().setSectionResizeMode(3, QHeaderView.Interactive)
-        self.tableView_departure_transit.setColumnWidth(0,90)
-        self.tableView_departure_transit.setColumnWidth(1,90)
-        self.tableView_departure_transit.setColumnWidth(2,200)
-        self.tableView_departure_transit.setColumnWidth(3,210)
+        self.tableView_departure_transit.setColumnWidth(0, 90)
+        self.tableView_departure_transit.setColumnWidth(1, 90)
+        self.tableView_departure_transit.setColumnWidth(2, 200)
+        self.tableView_departure_transit.setColumnWidth(3, 210)
         self.tableView_departure_transit.show()
 
         query_flight = QSqlQuery()  # 新建QSqlQuery对象
@@ -350,7 +363,8 @@ class Ui_MainWindow(object):
         self.tableView_departure_arrival.setModel(self.model)  # 绑定到tableView对象上
         self.model.setTable('飞行计划安排')  # 相当于 from 语句
         self.model.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-到达）剩余座位] > 0 "
-                             % (flight, self.dateEdit.date().toString("yyyy-MM-dd"), self.comboBox_class.currentText()))  # 相当于where语句
+                             % (flight, self.dateEdit.date().toString("yyyy-MM-dd"),
+                                self.comboBox_class.currentText()))  # 相当于where语句
         # self.model.setFilter("DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0" % (self.dateEdit.date().toString("yyyy-MM-dd") ))
 
         # print(self.model.filter())
@@ -379,23 +393,22 @@ class Ui_MainWindow(object):
             self.tableView_departure_arrival.hideColumn(18)
             self.tableView_departure_arrival.hideColumn(7)
             self.tableView_departure_arrival.hideColumn(8)
-        else :
+        else:
             self.tableView_departure_arrival.hideColumn(15)
             self.tableView_departure_arrival.hideColumn(21)
             self.tableView_departure_arrival.hideColumn(6)
             self.tableView_departure_arrival.hideColumn(8)
 
-
         # self.tableView_departure_arrival.setColumnWidth(3,200)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(0,QHeaderView.Interactive)
+        self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(2, QHeaderView.Interactive)
         self.tableView_departure_arrival.horizontalHeader().setSectionResizeMode(5, QHeaderView.Interactive)
-        self.tableView_departure_arrival.setColumnWidth(0,90)
-        self.tableView_departure_arrival.setColumnWidth(1,90)
-        self.tableView_departure_arrival.setColumnWidth(2,200)
-        self.tableView_departure_arrival.setColumnWidth(5,190)
+        self.tableView_departure_arrival.setColumnWidth(0, 90)
+        self.tableView_departure_arrival.setColumnWidth(1, 90)
+        self.tableView_departure_arrival.setColumnWidth(2, 200)
+        self.tableView_departure_arrival.setColumnWidth(5, 190)
 
         self.tableView_departure_arrival.show()  # 显示
 
@@ -413,7 +426,7 @@ class Ui_MainWindow(object):
                 flight_ta += ","
                 query_flight_ta.previous()
         flight_ta += ")"  # flight ： (A, B, ....)
-        print (flight_ta)
+        # print (flight_ta)
 
         self.model2 = QSqlTableModel()
         self.tableView_transit_destination.setModel(self.model2)
@@ -421,7 +434,7 @@ class Ui_MainWindow(object):
         self.model2.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（经停-到达）剩余座位] > 0 "
                               % (flight_ta, self.dateEdit.date().toString("yyyy-MM-dd"),
                                  self.comboBox_class.currentText()))
-        print(self.model2.filter())
+        # print(self.model2.filter())
         self.model2.select()
 
         self.tableView_transit_destination.hideColumn(2)
@@ -464,6 +477,9 @@ class Ui_MainWindow(object):
         self.tableView_transit_destination.setColumnWidth(4, 230)
         self.tableView_transit_destination.setColumnWidth(5, 190)
         self.tableView_transit_destination.show()
+
+        if self.model.rowCount()+self.model1.rowCount()+self.model2.rowCount() == 0:
+            QMessageBox.information(self, "提示", "没有符合条件的航班!", QMessageBox.Ok)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -518,6 +534,10 @@ class Ui_MainWindow(object):
         self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
         self.action_alter_flight.setText(_translate("MainWindow", "修改航程"))
 
+    def open_change_flight(self):
+        change_flight_window = Change_Flight_Window()
+        change_flight_window.exec_()
+
     def open_login(self):
         login_window = Login_Window()
         login_window.exec_()
@@ -529,7 +549,7 @@ class Ui_MainWindow(object):
         register_window.exec_()
 
     def open_add_flight(self):
-        add_flight_window = Add_Flight_Window();
+        add_flight_window = Add_Flight_Window()
         add_flight_window.exec_()
 
     def jump_buy(self):
@@ -550,25 +570,28 @@ class Ui_MainWindow(object):
             jump_buy_window.username = self.username
             jump_buy_window.exec_()
             self.state = -1
+
     def da(self):
         self.state = 0
         self.index = self.tableView_departure_arrival.currentIndex().row()
         # print(self.index)
         model = self.tableView_departure_arrival.model()
-        index = model.index(self.index,0)
+        index = model.index(self.index, 0)
         self.num = model.data(index)
         # print(data)
+
     def dt(self):
         self.state = 1
         self.index = self.tableView_departure_transit.currentIndex().row()
         # print(self.index)
         model = self.tableView_departure_transit.model()
-        index = model.index(self.index,0)
+        index = model.index(self.index, 0)
         self.num = model.data(index)
+
     def ta(self):
         self.state = 2
         self.index = self.tableView_transit_destination.currentIndex().row()
         # print(self.index)
         model = self.tableView_transit_destination.model()
-        index = model.index(self.index,0)
+        index = model.index(self.index, 0)
         self.num = model.data(index)

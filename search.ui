@@ -365,7 +365,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QTableView" name="tableview_transit_destination"/>
+         <widget class="QTableView" name="tableView_transit_destination"/>
         </item>
        </layout>
       </item>
