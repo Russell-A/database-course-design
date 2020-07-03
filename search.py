@@ -40,10 +40,11 @@ class Add_Flight_Window(QDialog, add_flight.Ui_Dialog):
 
 class Ui_MainWindow(object):
     state = -1  # 选中的票的状态，0为出发-目的，1为出发-经停，2为经停-目的，-1为未被选中
-    username = 'aa'
+    username = ''
     num = -1 #选中航程号
     index = -1
-    power = 1  # 权限0为未登录，1为用户，2为管理员
+    power = 0  # 权限0为未登录，1为用户，2为管理员
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1600, 900)
@@ -142,6 +143,7 @@ class Ui_MainWindow(object):
         self.dateEdit.setDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 1), QtCore.QTime(0, 0, 0)))
         self.dateEdit.setMaximumDateTime(QtCore.QDateTime(QtCore.QDate(2019, 12, 31), QtCore.QTime(23, 59, 59)))
         self.dateEdit.setMinimumDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 1), QtCore.QTime(0, 0, 0)))
+        self.dateEdit.setCalendarPopup(True)
         self.dateEdit.setObjectName("dateEdit")
         self.horizontalLayout_4.addWidget(self.dateEdit)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
@@ -185,7 +187,7 @@ class Ui_MainWindow(object):
         self.label_transit_arrival.setObjectName("label_transit_arrival")
         self.verticalLayout_2.addWidget(self.label_transit_arrival)
         self.tableView_transit_destination = QtWidgets.QTableView(self.centralwidget)
-        self.tableView_transit_destination.setObjectName("tableview_transit_destination")
+        self.tableView_transit_destination.setObjectName("tableView_transit_destination")
         self.verticalLayout_2.addWidget(self.tableView_transit_destination)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
         self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
@@ -226,16 +228,18 @@ class Ui_MainWindow(object):
         self.action_add_flight.setObjectName("action_add_flight")
         self.actionlogin = QtWidgets.QAction(MainWindow)
         self.actionlogin.setObjectName("actionlogin")
+        self.action_alter_flight = QtWidgets.QAction(MainWindow)
+        self.action_alter_flight.setObjectName("action_alter_flight")
         self.menu_register_login.addAction(self.actionregister)
         self.menu_register_login.addAction(self.actionlogin)
         self.menu_user.addAction(self.action_buy)
         self.menu_user.addAction(self.actiond_my_ticket)
         self.menu_administrator.addAction(self.action_add_flight)
+        self.menu_administrator.addAction(self.action_alter_flight)
         self.menu_function.addAction(self.menu_user.menuAction())
         self.menu_function.addAction(self.menu_administrator.menuAction())
         self.menubar.addAction(self.menu_register_login.menuAction())
         self.menubar.addAction(self.menu_function.menuAction())
-        self.dateEdit.setCalendarPopup(True)
 
         self.retranslateUi(MainWindow)
         self.Search.clicked.connect(self.searchresult)
@@ -409,7 +413,7 @@ class Ui_MainWindow(object):
                 flight_ta += ","
                 query_flight_ta.previous()
         flight_ta += ")"  # flight ： (A, B, ....)
-        # print (flight_ta)
+        print (flight_ta)
 
         self.model2 = QSqlTableModel()
         self.tableView_transit_destination.setModel(self.model2)
@@ -417,7 +421,7 @@ class Ui_MainWindow(object):
         self.model2.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（经停-到达）剩余座位] > 0 "
                               % (flight_ta, self.dateEdit.date().toString("yyyy-MM-dd"),
                                  self.comboBox_class.currentText()))
-        # print(self.model2.filter())
+        print(self.model2.filter())
         self.model2.select()
 
         self.tableView_transit_destination.hideColumn(2)
@@ -512,10 +516,13 @@ class Ui_MainWindow(object):
         self.actiond_my_ticket.setText(_translate("MainWindow", "我的机票"))
         self.action_add_flight.setText(_translate("MainWindow", "添加航程"))
         self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
+        self.action_alter_flight.setText(_translate("MainWindow", "修改航程"))
 
     def open_login(self):
         login_window = Login_Window()
         login_window.exec_()
+        self.username = login_window.username
+        self.power = login_window.power
 
     def open_register(self):
         register_window = Register_Window()
@@ -530,12 +537,12 @@ class Ui_MainWindow(object):
             reply = QMessageBox.warning(self,
                                         "消息框标题",
                                         "请先登录后再购票！",
-                                        QMessageBox.Yes | QMessageBox.No)
+                                        QMessageBox.Ok)
         elif (self.state == -1):
             reply = QMessageBox.warning(self,
                                         "消息框标题",
                                         "请选取要买的票！",
-                                        QMessageBox.Yes | QMessageBox.No)
+                                        QMessageBox.Ok)
         else:
             jump_buy_window = Jump_Buy_Window()
             jump_buy_window.state = self.state

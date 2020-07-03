@@ -14,6 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Dialog(object):
+    power = 0 #权限
+    username = '' #用户名
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(410, 398)
@@ -69,7 +71,7 @@ class Ui_Dialog(object):
         user_name = self.user_name.text()
         password = self.password.text()
         if (user_name == "" or password == ""):
-            print(QMessageBox.warning(self, "警告", "用户名和密码不可为空!", QMessageBox.Yes))
+            print(QMessageBox.warning(self, "警告", "用户名和密码不可为空!", QMessageBox.Ok))
             return
         # 进行数据库操作
         query = QSqlQuery()  # 新建sql对象
@@ -79,18 +81,24 @@ class Ui_Dialog(object):
         query.exec_()
 
         if (not query.next()):
-            print(QMessageBox.information(self, "提示", "该账号不存在!", QMessageBox.Yes))
+            print(QMessageBox.information(self, "提示", "该账号不存在!", QMessageBox.Ok))
         else:
             if (user_name == query.value(0) and password == query.value(1)):
 
                 if (query.value(2) == 1):
                     # 跳转到后续管理员窗口
-                    print(QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Yes))
+                    print(QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Ok))
+                    self.power = 2
+                    self.username = user_name
+                    self.close()
                 # 跳转到后续用户窗口
                 else:
-                    print(QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Yes))
+                    MessageBox.information(self, "提示", "登录成功!", QMessageBox.Ok)
+                    self.power = 1
+                    self.username = user_name
+                    self.close()
             else:
-                print(QMessageBox.information(self, "提示", "密码错误!", QMessageBox.Yes))
+                QMessageBox.information(self, "提示", "密码错误!", QMessageBox.Ok)
         return
 
     def window_close(self):

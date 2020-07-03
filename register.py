@@ -120,10 +120,10 @@ class Ui_Dialog(object):
         password_2 = self.password_2.text()
         tel = self.tel.text()
         if (user_name == "" or password == "" or tel == ""):
-            print(QMessageBox.warning(self, "警告", "用户名,密码及联系方式不可为空!", QMessageBox.Yes))
+            QMessageBox.warning(self, "警告", "用户名,密码及联系方式不可为空!", QMessageBox.Ok)
             return
         elif (password != password_2):
-            print(QMessageBox.warning(self, "警告","两次输入密码不一致!", QMessageBox.Yes))
+            QMessageBox.warning(self, "警告","两次输入密码不一致!", QMessageBox.Ok)
             return
         # 进行数据库操作
         query = QSqlQuery()  # 新建sql对象
@@ -136,9 +136,10 @@ class Ui_Dialog(object):
 
         value = query.exec_()
         if (value):
-            print(QMessageBox.information(self, "提示", "注册成功!", QMessageBox.Yes))
+            QMessageBox.information(self, "提示", "注册成功!", QMessageBox.Ok)
+            self.close()
         else:
-            print(QMessageBox.information(self, "提示", "注册失败！（已存在相同的用户名）", QMessageBox.Yes))
+            QMessageBox.information(self, "提示", "注册失败！（已存在相同的用户名）", QMessageBox.Ok)
 
         return
 
