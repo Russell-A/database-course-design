@@ -81,19 +81,19 @@ class Ui_Dialog(object):
         query.exec_()
 
         if (not query.next()):
-            print(QMessageBox.information(self, "提示", "该账号不存在!", QMessageBox.Ok))
+            QMessageBox.information(self, "提示", "该账号不存在!", QMessageBox.Ok)
         else:
             if (user_name == query.value(0) and password == query.value(1)):
 
                 if (query.value(2) == 1):
                     # 跳转到后续管理员窗口
-                    print(QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Ok))
+                    QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Ok)
                     self.power = 2
                     self.username = user_name
                     self.close()
                 # 跳转到后续用户窗口
                 else:
-                    MessageBox.information(self, "提示", "登录成功!", QMessageBox.Ok)
+                    QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Ok)
                     self.power = 1
                     self.username = user_name
                     self.close()

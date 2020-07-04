@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>航空票务系统  -V 1.0.0</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -388,6 +388,7 @@
     </property>
     <addaction name="actionregister"/>
     <addaction name="actionlogin"/>
+    <addaction name="actionquit"/>
    </widget>
    <widget class="QMenu" name="menu_function">
     <property name="title">
@@ -401,6 +402,9 @@
      <addaction name="actiond_my_ticket"/>
     </widget>
     <widget class="QMenu" name="menu_administrator">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="title">
       <string>管理员</string>
      </property>
@@ -408,6 +412,7 @@
      <addaction name="action_alter_flight"/>
     </widget>
     <addaction name="menu_user"/>
+    <addaction name="separator"/>
     <addaction name="menu_administrator"/>
    </widget>
    <addaction name="menu_register_login"/>
@@ -468,6 +473,9 @@
    </property>
   </action>
   <action name="action_add_flight">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>添加航程</string>
    </property>
@@ -480,6 +488,11 @@
   <action name="action_alter_flight">
    <property name="text">
     <string>修改航程</string>
+   </property>
+  </action>
+  <action name="actionquit">
+   <property name="text">
+    <string>退出登录</string>
    </property>
   </action>
  </widget>
