@@ -542,8 +542,12 @@ class Ui_MainWindow(object):
         self.actionquit.setText(_translate("MainWindow", "退出登录"))
 
     def open_mytickets(self):
-        mytickets_window = MyTickets_Window()
-        mytickets_window.exec_()
+        if (self.power != 1):
+            reply = QMessageBox.warning(self, "消息框标题","请用户先登录后再查看购票历史！", QMessageBox.Ok)
+        else:
+            my_ticket = MyTickets_Window()
+            my_ticket.username = self.username
+            my_ticket.exec_()
 
     def quit_login(self):
         if self.power != 0:

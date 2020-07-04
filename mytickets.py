@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import  QVBoxLayout,QWidget,QApplication ,QHBoxLayout,QDial
 
 class Ui_Mytickets(object):
     def setupUi(self, Dialog):
+        self.username = '' # 登录的用户名
         Dialog.setObjectName("Dialog")
         Dialog.resize(964, 873)
         self.layoutWidget_2 = QtWidgets.QWidget(Dialog)
@@ -186,7 +187,6 @@ class Ui_Mytickets(object):
 
         self.retranslateUi(Dialog)
 
-
         # choice3 已出行 按钮
         self.choice3.clicked.connect(self.alreadygone)
         #choice2 未出行按钮
@@ -258,7 +258,7 @@ class Ui_Mytickets(object):
             query = QSqlQuery()
             query.prepare('delete From 订票 where 机票编号= :ticketnum ')  # 输入SQL语句
             query.bindValue(":ticketnum", ticketnum)
-            if query.exec() :
+            if query.exec_() :
                 QMessageBox.information(self, "提示", "已成功退票！", QMessageBox.Yes)
             else:
                 QMessageBox.information(self, "提示", "退票时错误！", QMessageBox.Yes)
@@ -284,15 +284,15 @@ class Ui_Mytickets(object):
         self.ticket_info.hide()
         self.ticket_info_2.hide()
         self.ticket_info_3.hide()
-        username = '余夏'
+        username = self.username
         query = QSqlQuery()
         query.prepare('Select * From 用户购票信息 '
-                      'where 用户名 = :username ')  # 输入SQL语句 and 出发时间 < :specialtime
+                      'where 用户名 = :username and 出发时间 < :specialtime')  # 输入SQL语句  改成大于号就好了，但为了方便测试先不改
         query.bindValue(":username", username)
-        # now = QDateTime.currentDateTime()
-        # now = now.toString("yyyy-MM-dd HH:mm:ss")
-        # query.bindValue(":specialname",now)
-        query.exec()
+        now = QDateTime.currentDateTime()
+        now = now.toString("yyyy-MM-dd HH:mm:ss")
+        query.bindValue(":specialtime",now)
+        query.exec_()
         i = 1
         while query.next():
             if i==1:
@@ -340,7 +340,7 @@ class Ui_Mytickets(object):
         已出行机票……仅记录
         '''
         #username = self.xxx
-        username = '余夏'  #实际中已登录的信息
+        username = self.username  #实际中已登录的信息
         self.ticketdetails.hide()
         self.ticketdetails_2.hide()
         self.ticketdetails_3.hide()
@@ -350,13 +350,12 @@ class Ui_Mytickets(object):
         self.ticket_info_3.hide()
         query = QSqlQuery()
         query.prepare('Select * From 用户购票信息 '
-                      'where 用户名 = :username ')  # 输入SQL语句 and 出发时间 < :specialtime
+                      'where 用户名 = :username and 出发时间 < :specialtime ')  # 输入SQL语句 and 出发时间 < :specialtime
         query.bindValue(":username", username)
-        # now = QDateTime.currentDateTime()
-        # now = now.toString("yyyy-MM-dd HH:mm:ss")
-        # query.bindValue(":specialname",now)
-        # print(now)
-        query.exec()
+        now = QDateTime.currentDateTime()
+        now = now.toString("yyyy-MM-dd HH:mm:ss")
+        query.bindValue(":specialtime",now)
+        query.exec_()
         i = 1
         while query.next():
             if i==1:
@@ -399,7 +398,7 @@ class Ui_Mytickets(object):
             i += 1
 
     def nextpage(self): #在”已出行“ 一栏下 点击 “下一页” 按钮
-        username = '余夏'
+        username = self.username
         self.index += self.flag
         self.flag = 0
         if self.index >=  1:
@@ -410,7 +409,7 @@ class Ui_Mytickets(object):
         query = QSqlQuery()
         query.prepare('Select * From 用户购票信息 where 用户名 = :username ')  # 输入SQL语句
         query.bindValue(":username", username)
-        query.exec()
+        query.exec_()
         i = 1
         while query.next():
             if i >= 3* self.index :
@@ -459,7 +458,7 @@ class Ui_Mytickets(object):
 
 
     def lastpage(self):
-        username = '余夏'
+        username = self.username
         self.index -= 1
         if self.index == 0:
             self.lastpage_btn.hide()
@@ -470,7 +469,7 @@ class Ui_Mytickets(object):
         query = QSqlQuery()
         query.prepare('Select * From 用户购票信息 where 用户名 = :username ')  # 输入SQL语句
         query.bindValue(":username", username)
-        query.exec()
+        query.exec_()
         if self.index == 0:
             pass
         else:
