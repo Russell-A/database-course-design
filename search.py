@@ -17,7 +17,7 @@ import login
 import register_win
 import register_fail
 import jump_buy
-import add_flight, change_flight
+import add_flight, change_flight, mytickets, change_fly
 
 
 class Register_Window(QDialog, register.Ui_Dialog):
@@ -25,10 +25,19 @@ class Register_Window(QDialog, register.Ui_Dialog):
         super(Register_Window, self).__init__(parent)
         self.setupUi(self)
 
+class Change_Fly_Window(QDialog, change_fly.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Change_Fly_Window, self).__init__(parent)
+        self.setupUi(self)
 
 class Change_Flight_Window(QDialog, change_flight.Ui_Dialog):
     def __init__(self, parent=None):
         super(Change_Flight_Window, self).__init__(parent)
+        self.setupUi(self)
+
+class MyTickets_Window(QDialog, mytickets.Ui_Mytickets):
+    def __init__(self, parent=None):
+        super(MyTickets_Window, self).__init__(parent)
         self.setupUi(self)
 
 
@@ -214,6 +223,7 @@ class Ui_MainWindow(object):
         self.menu_user = QtWidgets.QMenu(self.menu_function)
         self.menu_user.setObjectName("menu_user")
         self.menu_administrator = QtWidgets.QMenu(self.menu_function)
+        self.menu_administrator.setEnabled(True)
         self.menu_administrator.setObjectName("menu_administrator")
         MainWindow.setMenuBar(self.menubar)
         self.toolBar = QtWidgets.QToolBar(MainWindow)
@@ -237,25 +247,35 @@ class Ui_MainWindow(object):
         self.actiond_my_ticket = QtWidgets.QAction(MainWindow)
         self.actiond_my_ticket.setObjectName("actiond_my_ticket")
         self.action_add_flight = QtWidgets.QAction(MainWindow)
+        self.action_add_flight.setEnabled(True)
         self.action_add_flight.setObjectName("action_add_flight")
         self.actionlogin = QtWidgets.QAction(MainWindow)
         self.actionlogin.setObjectName("actionlogin")
         self.action_alter_flight = QtWidgets.QAction(MainWindow)
         self.action_alter_flight.setObjectName("action_alter_flight")
+        self.actionquit = QtWidgets.QAction(MainWindow)
+        self.actionquit.setObjectName("actionquit")
+        self.actionchangefly = QtWidgets.QAction(MainWindow)
+        self.actionchangefly.setObjectName("actionchangefly")
         self.menu_register_login.addAction(self.actionregister)
         self.menu_register_login.addAction(self.actionlogin)
+        self.menu_register_login.addAction(self.actionquit)
         self.menu_user.addAction(self.action_buy)
         self.menu_user.addAction(self.actiond_my_ticket)
         self.menu_administrator.addAction(self.action_add_flight)
         self.menu_administrator.addAction(self.action_alter_flight)
+        self.menu_administrator.addAction(self.actionchangefly)
         self.menu_function.addAction(self.menu_user.menuAction())
+        self.menu_function.addSeparator()
         self.menu_function.addAction(self.menu_administrator.menuAction())
         self.menubar.addAction(self.menu_register_login.menuAction())
         self.menubar.addAction(self.menu_function.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.actionquit.triggered.connect(self.quit_login)
         self.action_alter_flight.triggered.connect(self.open_change_flight)
         self.Search.clicked.connect(self.searchresult)
+        self.actiond_my_ticket.triggered.connect(self.open_mytickets)
         # self.login.clicked.connect(self.open_login)
         self.pushbutton_buy.clicked.connect(self.jump_buy)
         self.actionregister.triggered.connect(self.open_register)
@@ -268,15 +288,9 @@ class Ui_MainWindow(object):
         self.tableView_departure_arrival.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableView_transit_destination.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableView_departure_transit.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.actionchangefly.triggered.connect(self.open_change_fly)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    # # def function_login(self):
-    #     child_login, child_login_ui = login.Ui_Dialog.instantiation(login)
-    #     child_login_ui.button_connect(child_login, self.login)
-    #
-    # # def function_register(self):
-    #     child_register, child_register_ui = register.Ui_Dialog.instantiation(register)
-    #     child_register_ui.button_connect(child_register, self.register_2)
 
     def searchresult(self):
         self.state = -1
@@ -483,7 +497,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "航空票务系统  -V 1.0.0"))
         self.label_departure.setText(_translate("MainWindow", "Departure"))
         self.comboBox_departure.setCurrentText(_translate("MainWindow", "北京"))
         self.comboBox_departure.setItemText(0, _translate("MainWindow", "北京"))
@@ -533,10 +547,69 @@ class Ui_MainWindow(object):
         self.action_add_flight.setText(_translate("MainWindow", "添加航程"))
         self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
         self.action_alter_flight.setText(_translate("MainWindow", "修改航程"))
+        self.actionquit.setText(_translate("MainWindow", "退出登录"))
+        self.actionchangefly.setText(_translate("MainWindow", "修改航班"))
+
+    def open_mytickets(self):
+        if (self.power != 1):
+            reply = QMessageBox.warning(self, "消息框标题","请用户先登录后再查看购票历史！", QMessageBox.Ok)
+        else:
+            my_ticket = MyTickets_Window()
+            my_ticket.username = self.username
+            my_ticket.exec_()
+
+    def quit_login(self):
+        if self.power != 0:
+            self.username = ''
+            self.power = 0
+            QMessageBox.information(self,
+                            "提示",
+                            "成功退出登录！",
+                            QMessageBox.Ok)
+        else:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录！",
+                                QMessageBox.Ok)
+            pass
+        pass
+    pass
+
+
+    def open_change_fly(self):
+        if self.power == 2:
+           change_fly_window = Change_Fly_Window()
+           change_fly_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+            pass
+        pass
+    pass
 
     def open_change_flight(self):
-        change_flight_window = Change_Flight_Window()
-        change_flight_window.exec_()
+        if self.power == 2:
+           change_flight_window = Change_Flight_Window()
+           change_flight_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+
+
 
     def open_login(self):
         login_window = Login_Window()
@@ -544,23 +617,35 @@ class Ui_MainWindow(object):
         self.username = login_window.username
         self.power = login_window.power
 
+
     def open_register(self):
         register_window = Register_Window()
         register_window.exec_()
 
     def open_add_flight(self):
-        add_flight_window = Add_Flight_Window()
-        add_flight_window.exec_()
+        if self.power == 2:
+            add_flight_window = Add_Flight_Window()
+            add_flight_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
 
     def jump_buy(self):
         if (self.power < 1):
             reply = QMessageBox.warning(self,
-                                        "消息框标题",
+                                        "提示",
                                         "请先登录后再购票！",
                                         QMessageBox.Ok)
         elif (self.state == -1):
             reply = QMessageBox.warning(self,
-                                        "消息框标题",
+                                        "提示",
                                         "请选取要买的票！",
                                         QMessageBox.Ok)
         else:
