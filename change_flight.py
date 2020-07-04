@@ -67,18 +67,38 @@ class Ui_Dialog(object):
         self.line_3.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_3.setObjectName("line_3")
         self.verticalLayout.addWidget(self.line_3)
-        self.radioButton_sql = QtWidgets.QRadioButton(Dialog)
-        self.radioButton_sql.setObjectName("radioButton_sql")
-        self.verticalLayout.addWidget(self.radioButton_sql)
-        self.textEdit_sql = QtWidgets.QTextEdit(Dialog)
-        self.textEdit_sql.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Ignored)
-        sizePolicy.setHorizontalStretch(1)
+        self.radioButton_flight_no = QtWidgets.QRadioButton(Dialog)
+        self.radioButton_flight_no.setObjectName("radioButton_flight_no")
+        self.verticalLayout.addWidget(self.radioButton_flight_no)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label_flight_no_2 = QtWidgets.QLabel(Dialog)
+        self.label_flight_no_2.setEnabled(False)
+        self.label_flight_no_2.setObjectName("label_flight_no_2")
+        self.horizontalLayout_4.addWidget(self.label_flight_no_2)
+        self.lineEdit_flight_no_2 = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_flight_no_2.setEnabled(False)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textEdit_sql.sizePolicy().hasHeightForWidth())
-        self.textEdit_sql.setSizePolicy(sizePolicy)
-        self.textEdit_sql.setObjectName("textEdit_sql")
-        self.verticalLayout.addWidget(self.textEdit_sql)
+        sizePolicy.setHeightForWidth(self.lineEdit_flight_no_2.sizePolicy().hasHeightForWidth())
+        self.lineEdit_flight_no_2.setSizePolicy(sizePolicy)
+        self.lineEdit_flight_no_2.setObjectName("lineEdit_flight_no_2")
+        self.horizontalLayout_4.addWidget(self.lineEdit_flight_no_2)
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.label = QtWidgets.QLabel(Dialog)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(7)
+        self.label.setFont(font)
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setEnabled(False)
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
         self.line = QtWidgets.QFrame(Dialog)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
@@ -140,18 +160,46 @@ class Ui_Dialog(object):
                 self.tableView_search.show()
                 self.pushButton_submit.setEnabled(True)
         else:
-            sql = self.textEdit_sql.toPlainText()
-            self.model = QSqlQueryModel()
-            self.model.setQuery("%s" %(sql))
-            self.tableView_search.setModel(self.model)
-            if self.model.lastError().isValid():
-                QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
-                                              QtWidgets.QMessageBox.Ok)
+            flight_no = self.lineEdit_flight_no_2.text()  # 设置航班编号
+            self.model = QtSql.QSqlTableModel()
+            self.model.setEditStrategy(QtSql.QSqlTableModel.OnManualSubmit)
+            self.tableView_search.setModel(self.model)  # 绑定table
+            self.model.setTable("飞行计划安排")
+
+            if flight_no == '':
+                if not self.model.select():
+                    QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
+                                                  QtWidgets.QMessageBox.Ok)
+            else:
+                self.model.setFilter("航班编号 = %s" % (flight_no))
+                # print(self.model.filter())
+                if not self.model.select():
+                    QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
+                                                  QtWidgets.QMessageBox.Ok)
+            self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+            if self.model.rowCount() == 0:
+                QtWidgets.QMessageBox.information(self, "提示", "未找到符合条件的航程，请重试。", QtWidgets.QMessageBox.Ok)
                 self.pushButton_submit.setEnabled(False)
             else:
                 self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
                 self.tableView_search.show()
                 self.pushButton_submit.setEnabled(True)
+
+
+
+
+            # sql = self.textEdit_sql.toPlainText()
+            # self.model = QSqlQueryModel()
+            # self.model.setQuery("%s" %(sql))
+            # self.tableView_search.setModel(self.model)
+            # if self.model.lastError().isValid():
+            #     QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
+            #                                   QtWidgets.QMessageBox.Ok)
+            #     self.pushButton_submit.setEnabled(False)
+            # else:
+            #     self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+            #     self.tableView_search.show()
+            #     self.pushButton_submit.setEnabled(True)
 
 
 
@@ -165,20 +213,22 @@ class Ui_Dialog(object):
 
     def state_change(self):
         self.lineEdit_flight_no.setEnabled(not self.lineEdit_flight_no.isEnabled())
-        self.textEdit_sql.setEnabled(not self.textEdit_sql.isEnabled())
+        self.lineEdit_flight_no_2.setEnabled(not self.lineEdit_flight_no_2.isEnabled())
+        self.label_empty.setEnabled(not self.label_empty.isEnabled())
+        self.label_flight_no.setEnabled(not self.label_flight_no.isEnabled())
+        self.label_flight_no_2.setEnabled(not self.label_flight_no_2.isEnabled())
+        self.label.setEnabled(not self.label.isEnabled())
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "修改航程"))
         self.radioButton_flight.setText(_translate("Dialog", "使用航程号"))
         self.label_flight_no.setText(_translate("Dialog", "航程号："))
         self.label_empty.setText(_translate("Dialog", "（为空则查询全部航程）"))
-        self.radioButton_sql.setText(_translate("Dialog", "使用SQL语句"))
-        self.textEdit_sql.setHtml(_translate("Dialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#2d2d2d;\">输入SQL语句</span></p></body></html>"))
+        self.radioButton_flight_no.setText(_translate("Dialog", "使用航班编号"))
+        self.label_flight_no_2.setText(_translate("Dialog", "航班编号："))
+        self.label.setText(_translate("Dialog", "（为空则查询全部航程）"))
         self.pushButton_search.setText(_translate("Dialog", "查询"))
         self.pushButton_submit.setText(_translate("Dialog", "提交更改"))
+
 
