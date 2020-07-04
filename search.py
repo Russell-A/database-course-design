@@ -17,7 +17,7 @@ import login
 import register_win
 import register_fail
 import jump_buy
-import add_flight, change_flight, mytickets
+import add_flight, change_flight, mytickets, change_fly
 
 
 class Register_Window(QDialog, register.Ui_Dialog):
@@ -25,6 +25,10 @@ class Register_Window(QDialog, register.Ui_Dialog):
         super(Register_Window, self).__init__(parent)
         self.setupUi(self)
 
+class Change_Fly_Window(QDialog, change_fly.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Change_Fly_Window, self).__init__(parent)
+        self.setupUi(self)
 
 class Change_Flight_Window(QDialog, change_flight.Ui_Dialog):
     def __init__(self, parent=None):
@@ -251,6 +255,8 @@ class Ui_MainWindow(object):
         self.action_alter_flight.setObjectName("action_alter_flight")
         self.actionquit = QtWidgets.QAction(MainWindow)
         self.actionquit.setObjectName("actionquit")
+        self.actionchangefly = QtWidgets.QAction(MainWindow)
+        self.actionchangefly.setObjectName("actionchangefly")
         self.menu_register_login.addAction(self.actionregister)
         self.menu_register_login.addAction(self.actionlogin)
         self.menu_register_login.addAction(self.actionquit)
@@ -258,6 +264,7 @@ class Ui_MainWindow(object):
         self.menu_user.addAction(self.actiond_my_ticket)
         self.menu_administrator.addAction(self.action_add_flight)
         self.menu_administrator.addAction(self.action_alter_flight)
+        self.menu_administrator.addAction(self.actionchangefly)
         self.menu_function.addAction(self.menu_user.menuAction())
         self.menu_function.addSeparator()
         self.menu_function.addAction(self.menu_administrator.menuAction())
@@ -281,6 +288,7 @@ class Ui_MainWindow(object):
         self.tableView_departure_arrival.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableView_transit_destination.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableView_departure_transit.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.actionchangefly.triggered.connect(self.open_change_fly)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
@@ -540,6 +548,7 @@ class Ui_MainWindow(object):
         self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
         self.action_alter_flight.setText(_translate("MainWindow", "修改航程"))
         self.actionquit.setText(_translate("MainWindow", "退出登录"))
+        self.actionchangefly.setText(_translate("MainWindow", "修改航班"))
 
     def open_mytickets(self):
         if (self.power != 1):
@@ -562,7 +571,28 @@ class Ui_MainWindow(object):
                                 "警告",
                                 "您还未登录！",
                                 QMessageBox.Ok)
+            pass
+        pass
+    pass
 
+
+    def open_change_fly(self):
+        if self.power == 2:
+           change_fly_window = Change_Fly_Window()
+           change_fly_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+            pass
+        pass
+    pass
 
     def open_change_flight(self):
         if self.power == 2:
@@ -578,6 +608,7 @@ class Ui_MainWindow(object):
                                 "警告",
                                 "您不具备管理员权限！",
                                 QMessageBox.Ok)
+
 
 
     def open_login(self):

@@ -87,7 +87,7 @@ class Ui_Dialog(object):
 
                 if (query.value(2) == 1):
                     # 跳转到后续管理员窗口
-                    QMessageBox.information(self, "提示", "登录成功!", QMessageBox.Ok)
+                    QMessageBox.information(self, "提示", "管理员登录成功!", QMessageBox.Ok)
                     self.power = 2
                     self.username = user_name
                     self.close()

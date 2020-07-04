@@ -403,13 +403,14 @@
     </widget>
     <widget class="QMenu" name="menu_administrator">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="title">
       <string>管理员</string>
      </property>
      <addaction name="action_add_flight"/>
      <addaction name="action_alter_flight"/>
+     <addaction name="actionchangefly"/>
     </widget>
     <addaction name="menu_user"/>
     <addaction name="separator"/>
@@ -493,6 +494,11 @@
   <action name="actionquit">
    <property name="text">
     <string>退出登录</string>
+   </property>
+  </action>
+  <action name="actionchangefly">
+   <property name="text">
+    <string>修改航班</string>
    </property>
   </action>
  </widget>
