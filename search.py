@@ -14,8 +14,7 @@ from PyQt5.QtSql import *
 import sys
 import register
 import login
-import register_win
-import register_fail
+import Administrator_search
 import jump_buy
 import add_flight, change_flight, mytickets, change_fly
 
@@ -58,6 +57,10 @@ class Add_Flight_Window(QDialog, add_flight.Ui_Dialog):
         super(Add_Flight_Window, self).__init__(parent)
         self.setupUi(self)
 
+class Ad_Search_Window(QDialog, Administrator_search.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Ad_Search_Window, self).__init__(parent)
+        self.setupUi(self)
 
 class Ui_MainWindow(object):
     state = -1  # 选中的票的状态，0为出发-目的，1为出发-经停，2为经停-目的，-1为未被选中
@@ -249,6 +252,9 @@ class Ui_MainWindow(object):
         self.action_add_flight = QtWidgets.QAction(MainWindow)
         self.action_add_flight.setEnabled(True)
         self.action_add_flight.setObjectName("action_add_flight")
+        self.action_ad_search = QtWidgets.QAction(MainWindow)
+        self.action_ad_search.setEnabled(True)
+        self.action_ad_search.setObjectName("action_ad_search")
         self.actionlogin = QtWidgets.QAction(MainWindow)
         self.actionlogin.setObjectName("actionlogin")
         self.action_alter_flight = QtWidgets.QAction(MainWindow)
@@ -263,6 +269,7 @@ class Ui_MainWindow(object):
         self.menu_user.addAction(self.action_buy)
         self.menu_user.addAction(self.actiond_my_ticket)
         self.menu_administrator.addAction(self.action_add_flight)
+        self.menu_administrator.addAction(self.action_ad_search)
         self.menu_administrator.addAction(self.action_alter_flight)
         self.menu_administrator.addAction(self.actionchangefly)
         self.menu_function.addAction(self.menu_user.menuAction())
@@ -282,6 +289,7 @@ class Ui_MainWindow(object):
         self.actionlogin.triggered.connect(self.open_login)
         # self.register_2.clicked.connect(self.open_register)
         self.action_add_flight.triggered.connect(self.open_add_flight)
+        self.action_ad_search.triggered.connect(self.open_ad_search)
         self.tableView_departure_arrival.clicked.connect(self.da)
         self.tableView_departure_transit.clicked.connect(self.dt)
         self.tableView_transit_destination.clicked.connect(self.ta)
@@ -545,6 +553,7 @@ class Ui_MainWindow(object):
         self.action_buy.setText(_translate("MainWindow", "机票购买"))
         self.actiond_my_ticket.setText(_translate("MainWindow", "我的机票"))
         self.action_add_flight.setText(_translate("MainWindow", "添加航程"))
+        self.action_ad_search.setText(_translate("MainWindow", "查看乘客信息"))
         self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
         self.action_alter_flight.setText(_translate("MainWindow", "修改航程"))
         self.actionquit.setText(_translate("MainWindow", "退出登录"))
@@ -626,6 +635,20 @@ class Ui_MainWindow(object):
         if self.power == 2:
             add_flight_window = Add_Flight_Window()
             add_flight_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+    def open_ad_search(self):
+        if self.power == 2:
+            ad_search_window = Ad_Search_Window()
+            ad_search_window.exec_()
         elif self.power == 0:
             QMessageBox.warning(self,
                                 "警告",

@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtSql
 from PyQt5.QtSql import QSqlTableModel, QSqlQueryModel
+from PyQt5.QtWidgets import QMessageBox
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -87,6 +88,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_4.addWidget(self.lineEdit_flight_no_2)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
         self.label = QtWidgets.QLabel(Dialog)
+        self.label.setEnabled(False)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -96,7 +98,6 @@ class Ui_Dialog(object):
         font.setPointSize(7)
         self.label.setFont(font)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setEnabled(False)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.line = QtWidgets.QFrame(Dialog)
@@ -112,10 +113,20 @@ class Ui_Dialog(object):
         self.pushButton_search.setSizePolicy(sizePolicy)
         self.pushButton_search.setObjectName("pushButton_search")
         self.verticalLayout.addWidget(self.pushButton_search)
+        self.pushButton_add = QtWidgets.QPushButton(Dialog)
+        self.pushButton_add.setObjectName("pushButton_add")
+        self.verticalLayout.addWidget(self.pushButton_add)
+        self.pushButton_delete = QtWidgets.QPushButton(Dialog)
+        self.pushButton_delete.setObjectName("pushButton_delete")
+        self.verticalLayout.addWidget(self.pushButton_delete)
         self.pushButton_submit = QtWidgets.QPushButton(Dialog)
         self.pushButton_submit.setEnabled(False)
         self.pushButton_submit.setObjectName("pushButton_submit")
         self.verticalLayout.addWidget(self.pushButton_submit)
+        self.pushButton_revert = QtWidgets.QPushButton(Dialog)
+        self.pushButton_revert.setEnabled(False)
+        self.pushButton_revert.setObjectName("pushButton_revert")
+        self.verticalLayout.addWidget(self.pushButton_revert)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.line_2 = QtWidgets.QFrame(Dialog)
         self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
@@ -131,6 +142,9 @@ class Ui_Dialog(object):
         self.radioButton_flight.toggled.connect(self.state_change)
         self.pushButton_search.clicked.connect(self.search)
         self.pushButton_submit.clicked.connect(self.submit)
+        self.pushButton_revert.clicked.connect(self.revert)
+        self.pushButton_delete.clicked.connect(self.delete_row)
+        self.pushButton_add.clicked.connect(self.add_row)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def search(self):
@@ -157,10 +171,12 @@ class Ui_Dialog(object):
             if self.model.rowCount() == 0:
                 QtWidgets.QMessageBox.information(self, "提示", "未找到符合条件的航程，请重试。", QtWidgets.QMessageBox.Ok)
                 self.pushButton_submit.setEnabled(False)
+                self.pushButton_revert.setEnabled(False)
             else:
                 self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
                 self.tableView_search.show()
                 self.pushButton_submit.setEnabled(True)
+                self.pushButton_revert.setEnabled(True)
         else:
             flight_no = self.lineEdit_flight_no_2.text()  # 设置航班编号
             self.model = QtSql.QSqlTableModel()
@@ -184,10 +200,15 @@ class Ui_Dialog(object):
             if self.model.rowCount() == 0:
                 QtWidgets.QMessageBox.information(self, "提示", "未找到符合条件的航程，请重试。", QtWidgets.QMessageBox.Ok)
                 self.pushButton_submit.setEnabled(False)
+                self.pushButton_revert.setEnabled(False)
             else:
                 self.tableView_search.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
                 self.tableView_search.show()
                 self.pushButton_submit.setEnabled(True)
+                self.pushButton_revert.setEnabled(True)
+                pass
+            pass
+        pass    
 
 
 
@@ -205,14 +226,46 @@ class Ui_Dialog(object):
             #     self.tableView_search.show()
             #     self.pushButton_submit.setEnabled(True)
 
-
+    def revert(self):
+        if QMessageBox.information(self,"取消更改","确定取消更改？", QMessageBox.Yes|QMessageBox.No) ==QMessageBox.Yes:
+            self.model.revertAll()
+            pass
+        pass
 
     def submit(self):
-        if self.model.submitAll():
-            QtWidgets.QMessageBox.information(self,"提示","修改成功。",QtWidgets.QMessageBox.Ok)
+        OK =QMessageBox.warning(self,"提交信息","数据提交后不可恢复，确定提交吗？", QMessageBox.Yes|QMessageBox.No)
+        if OK == QMessageBox.No:
+            pass
         else:
-            QtWidgets.QMessageBox.warning(self,"提示","%s" %(self.model.lastError().text()),QtWidgets.QMessageBox.Ok)
+            if self.model.submitAll():
+                QtWidgets.QMessageBox.information(self,"提示","修改成功。",QtWidgets.QMessageBox.Ok)
+            else:
+                self.model.revertAll()
+                QtWidgets.QMessageBox.warning(self,"提示","%s" %(self.model.lastError().text()),QtWidgets.QMessageBox.Ok)
+                pass
+            pass
+        pass
 
+    def delete_row(self):
+        curRow = self.tableView_search.currentIndex().row()  # 获取选中的行
+        self.model.removeRow(curRow)  # 删除该行
+        ok = QMessageBox.warning(self, "删除当前行!", "你确定删除当前行吗？", QMessageBox.Yes, QMessageBox.No)
+        if (ok == QMessageBox.No):
+            self.model.revertAll()  # 如果不删除，则撤销
+        else:
+            if self.model.submitAll():
+                QtWidgets.QMessageBox.information(self, "提示", "修改成功。", QtWidgets.QMessageBox.Ok)
+            else:
+                QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
+                                              QtWidgets.QMessageBox.Ok)
+                pass
+            pass
+        pass
+    pass
+
+    def add_row(self):
+        rowNum = self.model.rowCount()  # 获得表的行数
+        self.model.insertRow(rowNum)  #添加一行
 
 
     def state_change(self):
@@ -233,6 +286,9 @@ class Ui_Dialog(object):
         self.label_flight_no_2.setText(_translate("Dialog", "航班编号："))
         self.label.setText(_translate("Dialog", "（为空则查询全部航程）"))
         self.pushButton_search.setText(_translate("Dialog", "查询"))
+        self.pushButton_add.setText(_translate("Dialog", "添加一行"))
+        self.pushButton_delete.setText(_translate("Dialog", "删除选中行"))
         self.pushButton_submit.setText(_translate("Dialog", "提交更改"))
+        self.pushButton_revert.setText(_translate("Dialog", "取消更改"))
 
 
