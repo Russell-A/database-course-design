@@ -38,7 +38,7 @@ class Ui_Mytickets(object):
         self.ticket_info.setGeometry(QtCore.QRect(420, 40, 461, 752))
         self.ticket_info.setObjectName("ticket_info")
         self.ticketdetails = QtWidgets.QPushButton(self.ticket_info)
-        self.ticketdetails.setGeometry(QtCore.QRect(170, 200, 91, 28))
+        self.ticketdetails.setGeometry(QtCore.QRect(290, 190, 91, 28))
         self.ticketdetails.setObjectName("ticketdetails")
         self.flight = QtWidgets.QLabel(self.ticket_info)
         self.flight.setGeometry(QtCore.QRect(30, 30, 72, 15))
@@ -56,19 +56,19 @@ class Ui_Mytickets(object):
         self.customer.setGeometry(QtCore.QRect(330, 20, 111, 31))
         self.customer.setObjectName("customer")
         self.flightnum = QtWidgets.QTextBrowser(self.ticket_info)
-        self.flightnum.setGeometry(QtCore.QRect(110, 20, 111, 31))
+        self.flightnum.setGeometry(QtCore.QRect(110, 20, 121, 31))
         self.flightnum.setObjectName("flightnum")
         self.leavetime = QtWidgets.QTextBrowser(self.ticket_info)
-        self.leavetime.setGeometry(QtCore.QRect(110, 60, 111, 31))
+        self.leavetime.setGeometry(QtCore.QRect(110, 60, 121, 41))
         self.leavetime.setObjectName("leavetime")
         self.locations = QtWidgets.QTextBrowser(self.ticket_info)
-        self.locations.setGeometry(QtCore.QRect(110, 120, 111, 41))
+        self.locations.setGeometry(QtCore.QRect(110, 120, 121, 71))
         self.locations.setObjectName("locations")
         self.ticket_info_2 = QtWidgets.QGroupBox(self.ticket_info)
         self.ticket_info_2.setGeometry(QtCore.QRect(0, 240, 449, 245))
         self.ticket_info_2.setObjectName("ticket_info_2")
         self.ticketdetails_2 = QtWidgets.QPushButton(self.ticket_info_2)
-        self.ticketdetails_2.setGeometry(QtCore.QRect(170, 200, 91, 28))
+        self.ticketdetails_2.setGeometry(QtCore.QRect(290, 190, 91, 28))
         self.ticketdetails_2.setObjectName("ticketdetails_2")
         self.flight_2 = QtWidgets.QLabel(self.ticket_info_2)
         self.flight_2.setGeometry(QtCore.QRect(30, 30, 72, 15))
@@ -86,13 +86,13 @@ class Ui_Mytickets(object):
         self.customer_2.setGeometry(QtCore.QRect(330, 20, 111, 31))
         self.customer_2.setObjectName("customer_2")
         self.flightnum_2 = QtWidgets.QTextBrowser(self.ticket_info_2)
-        self.flightnum_2.setGeometry(QtCore.QRect(110, 20, 111, 31))
+        self.flightnum_2.setGeometry(QtCore.QRect(110, 20, 121, 31))
         self.flightnum_2.setObjectName("flightnum_2")
         self.leavetime_2 = QtWidgets.QTextBrowser(self.ticket_info_2)
-        self.leavetime_2.setGeometry(QtCore.QRect(110, 90, 111, 31))
+        self.leavetime_2.setGeometry(QtCore.QRect(110, 90, 121, 41))
         self.leavetime_2.setObjectName("leavetime_2")
         self.locations_2 = QtWidgets.QTextBrowser(self.ticket_info_2)
-        self.locations_2.setGeometry(QtCore.QRect(110, 150, 111, 41))
+        self.locations_2.setGeometry(QtCore.QRect(110, 150, 121, 71))
         self.locations_2.setObjectName("locations_2")
         self.seat_2 = QtWidgets.QTextBrowser(self.ticket_info_2)
         self.seat_2.setGeometry(QtCore.QRect(330, 100, 111, 31))
@@ -134,7 +134,7 @@ class Ui_Mytickets(object):
         self.ticket_info_3.setGeometry(QtCore.QRect(0, 470, 451, 241))
         self.ticket_info_3.setObjectName("ticket_info_3")
         self.ticketdetails_3 = QtWidgets.QPushButton(self.ticket_info_3)
-        self.ticketdetails_3.setGeometry(QtCore.QRect(170, 200, 91, 28))
+        self.ticketdetails_3.setGeometry(QtCore.QRect(290, 190, 91, 28))
         self.ticketdetails_3.setObjectName("ticketdetails_3")
         self.flight_3 = QtWidgets.QLabel(self.ticket_info_3)
         self.flight_3.setGeometry(QtCore.QRect(30, 30, 72, 15))
@@ -152,13 +152,13 @@ class Ui_Mytickets(object):
         self.customer_3.setGeometry(QtCore.QRect(330, 20, 111, 31))
         self.customer_3.setObjectName("customer_3")
         self.flightnum_3 = QtWidgets.QTextBrowser(self.ticket_info_3)
-        self.flightnum_3.setGeometry(QtCore.QRect(110, 20, 111, 31))
+        self.flightnum_3.setGeometry(QtCore.QRect(110, 20, 121, 31))
         self.flightnum_3.setObjectName("flightnum_3")
         self.leavetime_3 = QtWidgets.QTextBrowser(self.ticket_info_3)
-        self.leavetime_3.setGeometry(QtCore.QRect(110, 90, 111, 31))
+        self.leavetime_3.setGeometry(QtCore.QRect(110, 90, 121, 41))
         self.leavetime_3.setObjectName("leavetime_3")
         self.locations_3 = QtWidgets.QTextBrowser(self.ticket_info_3)
-        self.locations_3.setGeometry(QtCore.QRect(110, 150, 111, 41))
+        self.locations_3.setGeometry(QtCore.QRect(110, 150, 121, 71))
         self.locations_3.setObjectName("locations_3")
         self.seat_3 = QtWidgets.QTextBrowser(self.ticket_info_3)
         self.seat_3.setGeometry(QtCore.QRect(330, 100, 111, 31))
@@ -247,6 +247,7 @@ class Ui_Mytickets(object):
         self.flag = 0
 
 
+
     # 以下是一堆槽函数
     def refund(self,ticketnum):
         '''
@@ -275,6 +276,13 @@ class Ui_Mytickets(object):
         else:
             self.alreadygone()
 
+
+    def get_time_minus(self,a,b):
+        seconds = 60
+        atime = a.toTime_t()
+        btime = b.toTime_t()
+        return (atime - btime)/seconds
+
     # 除了查询条件 ，nondeparture 与 alreadygone 一样
     def nondeparture(self):
         self.ticketdetails.show()
@@ -299,7 +307,10 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum.setText(str(tmp1))
                 self.leavetime.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a= query.value('出发时间')
+                b = query.value('到达时间')
+                time = int( self.get_time_minus(a,b) )
+                self.locations.setText(str(query.value("出发地")) + '---' + str(time) + '分钟飞到----' + str(query.value("目的地")))
                 self.customer.setText(str(query.value("乘客姓名")))
                 self.ticketnum.setText(str(query.value('机票编号')))
                 self.seat.setText(str(query.value('舱位')))
@@ -309,7 +320,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_2.setText(str(tmp1))
                 self.leavetime_2.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations_2.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_2.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到----' + str(query.value("目的地")))
                 self.customer_2.setText(str(query.value("乘客姓名")))
                 self.ticketnum_2.setText(str(query.value('机票编号')))
                 self.seat_2.setText(str(query.value('舱位')))
@@ -320,7 +335,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_3.setText(str(tmp1))
                 self.leavetime_3.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations_3.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_3.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到----' + str(query.value("目的地")))
                 self.customer_3.setText(str(query.value("乘客姓名")))
                 self.ticketnum_3.setText(str(query.value('机票编号')))
                 self.seat_3.setText(str(query.value('舱位')))
@@ -332,6 +351,9 @@ class Ui_Mytickets(object):
                 self.flag = 1
                 break
             i += 1
+        if i == 1:
+            QMessageBox.information(self, "消息框标题", "抱歉，没有您的未出行信息！", QMessageBox.Ok)
+
 
 
 
@@ -362,7 +384,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum.setText(str(tmp1))
                 self.leavetime.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到----' + str(query.value("目的地")))
                 self.customer.setText(str(query.value("乘客姓名")))
                 self.ticketnum.setText(str(query.value('机票编号')))
                 self.seat.setText(str(query.value('舱位')))
@@ -372,7 +398,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_2.setText(str(tmp1))
                 self.leavetime_2.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations_2.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_2.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到----' + str(query.value("目的地")))
                 self.customer_2.setText(str(query.value("乘客姓名")))
                 self.ticketnum_2.setText(str(query.value('机票编号')))
                 self.seat_2.setText(str(query.value('舱位')))
@@ -383,7 +413,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_3.setText(str(tmp1))
                 self.leavetime_3.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations_3.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_3.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到----' + str(query.value("目的地")))
                 self.customer_3.setText(str(query.value("乘客姓名")))
                 self.ticketnum_3.setText(str(query.value('机票编号')))
                 self.seat_3.setText(str(query.value('舱位')))
@@ -396,6 +430,8 @@ class Ui_Mytickets(object):
                 #show the more flights
                 break
             i += 1
+        if i == 1:
+            QMessageBox.information(self, "消息框标题", "抱歉，没有您的购票信息！", QMessageBox.Ok)
 
     def nextpage(self): #在”已出行“ 一栏下 点击 “下一页” 按钮
         username = self.username
@@ -422,7 +458,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum.setText(str(tmp1))
                 self.leavetime.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到---' + str(query.value("目的地")))
                 self.customer.setText(str(query.value("乘客姓名")))
                 self.ticketnum.setText(str(query.value('机票编号')))
                 self.seat.setText(str(query.value('舱位')))
@@ -432,7 +472,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_2.setText(str(tmp1))
                 self.leavetime_2.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations_2.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_2.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到---' + str(query.value("目的地")))
                 self.customer_2.setText(str(query.value("乘客姓名")))
                 self.ticketnum_2.setText(str(query.value('机票编号')))
                 self.seat_2.setText(str(query.value('舱位')))
@@ -442,7 +486,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_3.setText(str(tmp1))
                 self.leavetime_3.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations_3.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_3.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到---' + str(query.value("目的地")))
                 self.customer_3.setText(str(query.value("乘客姓名")))
                 self.ticketnum_3.setText(str(query.value('机票编号')))
                 self.seat_3.setText(str(query.value('舱位')))
@@ -485,7 +533,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum.setText(str(tmp1))
                 self.leavetime.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到---' + str(query.value("目的地")))
                 self.customer.setText(str(query.value("乘客姓名")))
                 self.ticketnum.setText(str(query.value('机票编号')))
                 self.seat.setText(str(query.value('舱位')))
@@ -495,7 +547,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_2.setText(str(tmp1))
                 self.leavetime_2.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_2.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到---' + str(query.value("目的地")))
                 self.customer_2.setText(str(query.value("乘客姓名")))
                 self.ticketnum_2.setText(str(query.value('机票编号')))
                 self.seat_2.setText(str(query.value('舱位')))
@@ -505,7 +561,11 @@ class Ui_Mytickets(object):
                 tmp1 = query.value("航程号")
                 self.flightnum_3.setText(str(tmp1))
                 self.leavetime_3.setText(query.value('出发时间').toString(Qt.ISODate))
-                self.locations.setText(str(query.value("出发地")) + '--飞到--' + str(query.value("目的地")))
+                a = query.value('出发时间')
+                b = query.value('到达时间')
+                time = int(self.get_time_minus(a, b))
+                self.locations_3.setText(
+                    str(query.value("出发地")) + '---' + str(time) + '分钟飞到---' + str(query.value("目的地")))
                 self.customer_3.setText(str(query.value("乘客姓名")))
                 self.ticketnum_3.setText(str(query.value('机票编号')))
                 self.seat_3.setText(str(query.value('舱位')))

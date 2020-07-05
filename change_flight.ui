@@ -17,11 +17,20 @@
    <iconset>
     <normaloff>flight.png</normaloff>flight.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {   
+font-size:12px;
+border-radius:2px;
+color:rgba(51,51,51,1);
+background:qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 rgba(242,242,242,1), stop:1 rgba(255,255,255,1));
+border:1px solid rgba(221,221,221,1);
+}</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0">
        <property name="sizeConstraint">
         <enum>QLayout::SetMaximumSize</enum>
        </property>
@@ -175,8 +184,25 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="text">
           <string>查询</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_add">
+         <property name="text">
+          <string>添加一行</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_delete">
+         <property name="text">
+          <string>删除选中行</string>
          </property>
         </widget>
        </item>
@@ -187,6 +213,16 @@
          </property>
          <property name="text">
           <string>提交更改</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_revert">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>取消更改</string>
          </property>
         </widget>
        </item>

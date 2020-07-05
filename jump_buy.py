@@ -117,13 +117,16 @@ class Ui_Dialog_jump_buy(object):
         tacket_num = ()
         conn = pyodbc.connect(
             'DRIVER={SQL SERVER NATIVE CLIENT 10.0};SERVER=127.0.0.1;DATABASE=air;UID=sa;PWD=123456')
+        conn.autocommit = False
+        conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_SERIALIZABLE)
+        cursor = conn.cursor()
         if (self.state == 0):
             sql = "select *"\
                   " from 飞行计划安排 inner join 航班 on 飞行计划安排.航班编号 = 航班.航班编号"\
                   " inner join 机场 on 机场代码 = 出发机场代码"\
                   " inner join 机场 as b on b.机场代码 = 到达机场代码"\
                   " where 航程号 = ?"
-            cursor = conn.cursor()
+
             result = (cursor.execute(sql, self.num).fetchall())
             dairport = result[0][29]
             aairport = result[0][32]
@@ -134,7 +137,7 @@ class Ui_Dialog_jump_buy(object):
                   " inner join 机场 on 机场代码 = 出发机场代码"\
                   " inner join 机场 as b on b.机场代码 = 经停机场代码"\
                   " where 航程号 = ?"
-            cursor = conn.cursor()
+
             result = (cursor.execute(sql, self.num).fetchall())
             dairport = result[0][29]
             aairport = result[0][32]
@@ -145,7 +148,7 @@ class Ui_Dialog_jump_buy(object):
                   " inner join 机场 on 机场代码 = 出发机场代码"\
                   " inner join 机场 as b on b.机场代码 = 经停机场代码"\
                   " where 航程号 = ?"
-            cursor = conn.cursor()
+
             result = (cursor.execute(sql, self.num).fetchall())
             dairport = result[0][29]
             aairport = result[0][32]
@@ -172,15 +175,12 @@ class Ui_Dialog_jump_buy(object):
             reply = QMessageBox.warning(self,
                                         "消息框标题",
                                         "请先填写好信息！",
-                                        QMessageBox.Ok)
+                                        QMessageBox.Yes | QMessageBox.No)
         elif (tacket>0):
-            insert_sql = "insert into 订票 values (?,?,?,?,?,?,?,?,?,?,?)"
-            result_in = cursor.execute(insert_sql, self.num, dairport, aairport, str(tacket), cart, self.username, name, sex, '成人', str(id), str(tele))
-            cursor.commit()
-            print('insert complete')
-            update_sql = "update 飞行计划安排 set [" + cart + state_text[self.state]+"剩余座位] = ?" \
+
+            update_sql = "update 飞行计划安排 set [" + cart + state_text[self.state]+"剩余座位] = [" + cart + state_text[self.state]+"剩余座位]-1"\
                                                          " where 航程号=?"
-            result_up = cursor.execute(update_sql, tacket-1, self.num)
+            result_up = cursor.execute(update_sql, self.num)
 
             if (self.state == 0):
                 sql_1 = "update 飞行计划安排 set [" + cart + state_text[1]+"剩余座位] = [" + cart + state_text[1]+"剩余座位]-1"\
@@ -193,7 +193,9 @@ class Ui_Dialog_jump_buy(object):
                 sql_1 = "update 飞行计划安排 set [" + cart + state_text[0] + "剩余座位] = [" + cart + state_text[0]+"剩余座位]-1"\
                                                          " where 航程号=?"
                 cursor.execute(sql_1, self.num)
-
+            insert_sql = "insert into 订票 values (?,?,?,?,?,?,?,?,?,?,?)"
+            result_in = cursor.execute(insert_sql, self.num, dairport, aairport, str(tacket), cart, self.username, name, sex, '成人', str(id), str(tele))
+            print('insert complete')
             cursor.commit()
             print('update complete')
 
@@ -202,17 +204,22 @@ class Ui_Dialog_jump_buy(object):
                                         "购票成功！是否继续买票？",
                                         QMessageBox.Yes | QMessageBox.No)
             if (reply == QMessageBox.Yes):
+                conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_REPEATABLE_READ)
+                conn.close()
                 self.phone_num.setText('')
                 self.identity_num.setText('')
                 self.name.setText('')
             else:
+                conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_REPEATABLE_READ)
+                conn.close()
                 self.close()
         else:
             reply = QMessageBox.warning(self,
                                         "消息框标题",
                                         "没有余票！",
                                         QMessageBox.Yes | QMessageBox.No)
-        conn.close()
+            conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_REPEATABLE_READ)
+            conn.close()
     def remain_tacket(self):
         tacket_num = ()
         conn = pyodbc.connect(
