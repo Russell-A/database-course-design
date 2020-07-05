@@ -16,7 +16,8 @@ import register
 import login
 import Administrator_search
 import jump_buy
-import add_flight, change_flight, mytickets, change_fly
+import add_flight, change_flight, mytickets, change_fly,alter_info, change_plane
+import change_plane_type, change_airport
 
 
 class Register_Window(QDialog, register.Ui_Dialog):
@@ -27,6 +28,21 @@ class Register_Window(QDialog, register.Ui_Dialog):
 class Change_Fly_Window(QDialog, change_fly.Ui_Dialog):
     def __init__(self, parent=None):
         super(Change_Fly_Window, self).__init__(parent)
+        self.setupUi(self)
+
+class Change_Airport_Window(QDialog, change_airport.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Change_Airport_Window, self).__init__(parent)
+        self.setupUi(self)
+
+class Change_Plane_Window(QDialog, change_plane.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Change_Plane_Window, self).__init__(parent)
+        self.setupUi(self)
+
+class Change_Plane_Type_Window(QDialog, change_plane_type.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Change_Plane_Type_Window, self).__init__(parent)
         self.setupUi(self)
 
 class Change_Flight_Window(QDialog, change_flight.Ui_Dialog):
@@ -45,6 +61,10 @@ class Login_Window(QDialog, login.Ui_Dialog):
         super(Login_Window, self).__init__(parent)
         self.setupUi(self)
 
+class Alter_Info_Window(QDialog, alter_info.Ui_Dialog):
+    def __init__(self, parent=None):
+        super(Alter_Info_Window, self).__init__(parent)
+        self.setupUi(self)
 
 class Jump_Buy_Window(QDialog, jump_buy.Ui_Dialog_jump_buy):
     def __init__(self, parent=None):
@@ -245,16 +265,13 @@ class Ui_MainWindow(object):
         self.actionregister.setObjectName("actionregister")
         self.actionbuy = QtWidgets.QAction(MainWindow)
         self.actionbuy.setObjectName("actionbuy")
-        self.action_buy = QtWidgets.QAction(MainWindow)
-        self.action_buy.setObjectName("action_buy")
+        self.action_alter_info = QtWidgets.QAction(MainWindow)
+        self.action_alter_info.setObjectName("action_alter_info")
         self.actiond_my_ticket = QtWidgets.QAction(MainWindow)
         self.actiond_my_ticket.setObjectName("actiond_my_ticket")
         self.action_add_flight = QtWidgets.QAction(MainWindow)
         self.action_add_flight.setEnabled(True)
         self.action_add_flight.setObjectName("action_add_flight")
-        self.action_ad_search = QtWidgets.QAction(MainWindow)
-        self.action_ad_search.setEnabled(True)
-        self.action_ad_search.setObjectName("action_ad_search")
         self.actionlogin = QtWidgets.QAction(MainWindow)
         self.actionlogin.setObjectName("actionlogin")
         self.action_alter_flight = QtWidgets.QAction(MainWindow)
@@ -263,15 +280,26 @@ class Ui_MainWindow(object):
         self.actionquit.setObjectName("actionquit")
         self.actionchangefly = QtWidgets.QAction(MainWindow)
         self.actionchangefly.setObjectName("actionchangefly")
+        self.action_ad_search = QtWidgets.QAction(MainWindow)
+        self.action_ad_search.setObjectName("action_ad_search")
+        self.actions_change_plane = QtWidgets.QAction(MainWindow)
+        self.actions_change_plane.setObjectName("actions_change_plane")
+        self.actions_change_plane_type = QtWidgets.QAction(MainWindow)
+        self.actions_change_plane_type.setObjectName("actions_change_plane_type")
+        self.actions_change_airport = QtWidgets.QAction(MainWindow)
+        self.actions_change_airport.setObjectName("actions_change_airport")
         self.menu_register_login.addAction(self.actionregister)
         self.menu_register_login.addAction(self.actionlogin)
         self.menu_register_login.addAction(self.actionquit)
-        self.menu_user.addAction(self.action_buy)
+        self.menu_user.addAction(self.action_alter_info)
         self.menu_user.addAction(self.actiond_my_ticket)
-        self.menu_administrator.addAction(self.action_add_flight)
         self.menu_administrator.addAction(self.action_ad_search)
+        self.menu_administrator.addAction(self.action_add_flight)
         self.menu_administrator.addAction(self.action_alter_flight)
         self.menu_administrator.addAction(self.actionchangefly)
+        self.menu_administrator.addAction(self.actions_change_plane)
+        self.menu_administrator.addAction(self.actions_change_plane_type)
+        self.menu_administrator.addAction(self.actions_change_airport)
         self.menu_function.addAction(self.menu_user.menuAction())
         self.menu_function.addSeparator()
         self.menu_function.addAction(self.menu_administrator.menuAction())
@@ -279,10 +307,77 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_function.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.connect_items()
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "航空票务系统  -V 1.0.0"))
+        self.label_departure.setText(_translate("MainWindow", "Departure"))
+        self.comboBox_departure.setCurrentText(_translate("MainWindow", "北京"))
+        self.comboBox_departure.setItemText(0, _translate("MainWindow", "北京"))
+        self.comboBox_departure.setItemText(1, _translate("MainWindow", "成都"))
+        self.comboBox_departure.setItemText(2, _translate("MainWindow", "香港"))
+        self.comboBox_departure.setItemText(3, _translate("MainWindow", "哈尔滨"))
+        self.comboBox_departure.setItemText(4, _translate("MainWindow", "海南"))
+        self.comboBox_departure.setItemText(5, _translate("MainWindow", "上海"))
+        self.comboBox_departure.setItemText(6, _translate("MainWindow", "长春"))
+        self.comboBox_departure.setItemText(7, _translate("MainWindow", "兰州"))
+        self.comboBox_departure.setItemText(8, _translate("MainWindow", "广州"))
+        self.comboBox_departure.setItemText(9, _translate("MainWindow", "长沙"))
+        self.comboBox_departure.setItemText(10, _translate("MainWindow", "南昌"))
+        self.label_destination.setText(_translate("MainWindow", "Destination"))
+        self.comboBox_destination.setItemText(0, _translate("MainWindow", "北京"))
+        self.comboBox_destination.setItemText(1, _translate("MainWindow", "成都"))
+        self.comboBox_destination.setItemText(2, _translate("MainWindow", "香港"))
+        self.comboBox_destination.setItemText(3, _translate("MainWindow", "哈尔滨"))
+        self.comboBox_destination.setItemText(4, _translate("MainWindow", "海南"))
+        self.comboBox_destination.setItemText(5, _translate("MainWindow", "上海"))
+        self.comboBox_destination.setItemText(6, _translate("MainWindow", "长春"))
+        self.comboBox_destination.setItemText(7, _translate("MainWindow", "兰州"))
+        self.comboBox_destination.setItemText(8, _translate("MainWindow", "广州"))
+        self.comboBox_destination.setItemText(9, _translate("MainWindow", "长沙"))
+        self.comboBox_destination.setItemText(10, _translate("MainWindow", "南昌"))
+        self.label_date.setText(_translate("MainWindow", "DATE"))
+        self.label_class.setText(_translate("MainWindow", "Class"))
+        self.comboBox_class.setItemText(0, _translate("MainWindow", "头等舱"))
+        self.comboBox_class.setItemText(1, _translate("MainWindow", "商务舱"))
+        self.comboBox_class.setItemText(2, _translate("MainWindow", "经济舱"))
+        self.Search.setText(_translate("MainWindow", "Search"))
+        self.pushbutton_buy.setText(_translate("MainWindow", "Buy"))
+        self.label_departure_arrival.setText(_translate("MainWindow", "出发 - 到达："))
+        self.label_departure_transit.setText(_translate("MainWindow", "出发 - 经停："))
+        self.label_transit_arrival.setText(_translate("MainWindow", "经停 - 到达："))
+        self.menu_register_login.setTitle(_translate("MainWindow", "注册"))
+        self.menu_function.setTitle(_translate("MainWindow", "功能"))
+        self.menu_user.setTitle(_translate("MainWindow", "用户"))
+        self.menu_administrator.setTitle(_translate("MainWindow", "管理员"))
+        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
+        self.toolBar_2.setWindowTitle(_translate("MainWindow", "toolBar_2"))
+        self.toolBar_3.setWindowTitle(_translate("MainWindow", "toolBar_3"))
+        self.actionregister.setText(_translate("MainWindow", "用户注册"))
+        self.actionbuy.setText(_translate("MainWindow", "机票购买"))
+        self.action_alter_info.setText(_translate("MainWindow", "修改个人信息"))
+        self.actiond_my_ticket.setText(_translate("MainWindow", "我的机票"))
+        self.action_add_flight.setText(_translate("MainWindow", "添加航程"))
+        self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
+        self.action_alter_flight.setText(_translate("MainWindow", "查看\\修改航程"))
+        self.actionquit.setText(_translate("MainWindow", "退出登录"))
+        self.actionchangefly.setText(_translate("MainWindow", "查看\\修改航班"))
+        self.action_ad_search.setText(_translate("MainWindow", "查看乘客信息"))
+        self.actions_change_plane.setText(_translate("MainWindow", "查看\\修改飞机信息"))
+        self.actions_change_plane_type.setText(_translate("MainWindow", "查看\\修改飞机机型"))
+        self.actions_change_airport.setText(_translate("MainWindow", "查看\\修改机场信息"))
+
+    def connect_items(self):
+        self.actions_change_plane.triggered.connect(self.open_change_plane)
+        self.actions_change_plane_type.triggered.connect(self.open_change_plane_type)
+        self.actions_change_airport.triggered.connect(self.open_change_airport)
         self.actionquit.triggered.connect(self.quit_login)
         self.action_alter_flight.triggered.connect(self.open_change_flight)
         self.Search.clicked.connect(self.searchresult)
         self.actiond_my_ticket.triggered.connect(self.open_mytickets)
+        self.action_alter_info.triggered.connect(self.open_alter_info)
         # self.login.clicked.connect(self.open_login)
         self.pushbutton_buy.clicked.connect(self.jump_buy)
         self.actionregister.triggered.connect(self.open_register)
@@ -297,8 +392,210 @@ class Ui_MainWindow(object):
         self.tableView_transit_destination.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.tableView_departure_transit.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.actionchangefly.triggered.connect(self.open_change_fly)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
+    def open_mytickets(self):
+        if (self.power != 1):
+            reply = QMessageBox.warning(self, "消息框标题","请用户先登录后再查看购票历史！", QMessageBox.Ok)
+        else:
+            my_ticket = MyTickets_Window()
+            my_ticket.username = self.username
+            my_ticket.exec_()
+
+    def quit_login(self):
+        if self.power != 0:
+            self.username = ''
+            self.power = 0
+            QMessageBox.information(self,
+                            "提示",
+                            "成功退出登录！",
+                            QMessageBox.Ok)
+        else:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录！",
+                                QMessageBox.Ok)
+            pass
+        pass
+
+
+    def open_change_fly(self):
+        if self.power == 2:
+           change_fly_window = Change_Fly_Window()
+           change_fly_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+            pass
+        pass
+    pass
+
+    def open_change_plane_type(self):
+        if self.power == 2:
+           change_plane_type_window = Change_Plane_Type_Window()
+           change_plane_type_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+            pass
+        pass
+    pass
+
+    def open_change_plane(self):
+        if self.power == 2:
+           change_plane_window = Change_Plane_Window()
+           change_plane_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+            pass
+        pass
+    pass
+
+    def open_change_airport(self):
+        if self.power == 2:
+           change_airport_window = Change_Airport_Window()
+           change_airport_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+
+    def open_change_flight(self):
+        if self.power == 2:
+           change_flight_window = Change_Flight_Window()
+           change_flight_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+
+
+
+    def open_login(self):
+        login_window = Login_Window()
+        login_window.exec_()
+        self.username = login_window.username
+        self.power = login_window.power
+
+
+    def open_register(self):
+        register_window = Register_Window()
+        register_window.exec_()
+
+    def open_alter_info(self):
+        if (self.power != 1):
+            QMessageBox.warning(self, "消息框标题", "请用户先登录后再修改您的信息！", QMessageBox.Ok)
+        else:
+            alter_info_window = Alter_Info_Window()
+
+            alter_info_window.exec_()
+
+    def open_add_flight(self):
+        if self.power == 2:
+            add_flight_window = Add_Flight_Window()
+            add_flight_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+    def open_ad_search(self):
+        if self.power == 2:
+            ad_search_window = Ad_Search_Window()
+            ad_search_window.exec_()
+        elif self.power == 0:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您还未登录，请登录后使用该功能！",
+                                QMessageBox.Ok)
+        elif self.power == 1:
+            QMessageBox.warning(self,
+                                "警告",
+                                "您不具备管理员权限！",
+                                QMessageBox.Ok)
+
+    def jump_buy(self):
+        if (self.power < 1):
+            reply = QMessageBox.warning(self,
+                                        "提示",
+                                        "请先登录后再购票！",
+                                        QMessageBox.Ok)
+        elif (self.state == -1):
+            reply = QMessageBox.warning(self,
+                                        "提示",
+                                        "请选取要买的票！",
+                                        QMessageBox.Ok)
+        else:
+            jump_buy_window = Jump_Buy_Window()
+            jump_buy_window.state = self.state
+            jump_buy_window.num = self.num
+            jump_buy_window.username = self.username
+            jump_buy_window.exec_()
+            self.state = -1
+
+    def da(self):
+        self.state = 0
+        self.index = self.tableView_departure_arrival.currentIndex().row()
+        # print(self.index)
+        model = self.tableView_departure_arrival.model()
+        index = model.index(self.index, 0)
+        self.num = model.data(index)
+        # print(data)
+
+    def dt(self):
+        self.state = 1
+        self.index = self.tableView_departure_transit.currentIndex().row()
+        # print(self.index)
+        model = self.tableView_departure_transit.model()
+        index = model.index(self.index, 0)
+        self.num = model.data(index)
+
+    def ta(self):
+        self.state = 2
+        self.index = self.tableView_transit_destination.currentIndex().row()
+        # print(self.index)
+        model = self.tableView_transit_destination.model()
+        index = model.index(self.index, 0)
+        self.num = model.data(index)
 
     def searchresult(self):
         self.state = -1
@@ -502,204 +799,3 @@ class Ui_MainWindow(object):
 
         if self.model.rowCount()+self.model1.rowCount()+self.model2.rowCount() == 0:
             QMessageBox.information(self, "提示", "没有符合条件的航班!", QMessageBox.Ok)
-
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "航空票务系统  -V 1.0.0"))
-        self.label_departure.setText(_translate("MainWindow", "Departure"))
-        self.comboBox_departure.setCurrentText(_translate("MainWindow", "北京"))
-        self.comboBox_departure.setItemText(0, _translate("MainWindow", "北京"))
-        self.comboBox_departure.setItemText(1, _translate("MainWindow", "成都"))
-        self.comboBox_departure.setItemText(2, _translate("MainWindow", "香港"))
-        self.comboBox_departure.setItemText(3, _translate("MainWindow", "哈尔滨"))
-        self.comboBox_departure.setItemText(4, _translate("MainWindow", "海南"))
-        self.comboBox_departure.setItemText(5, _translate("MainWindow", "上海"))
-        self.comboBox_departure.setItemText(6, _translate("MainWindow", "长春"))
-        self.comboBox_departure.setItemText(7, _translate("MainWindow", "兰州"))
-        self.comboBox_departure.setItemText(8, _translate("MainWindow", "广州"))
-        self.comboBox_departure.setItemText(9, _translate("MainWindow", "长沙"))
-        self.comboBox_departure.setItemText(10, _translate("MainWindow", "南昌"))
-        self.label_destination.setText(_translate("MainWindow", "Destination"))
-        self.comboBox_destination.setItemText(0, _translate("MainWindow", "北京"))
-        self.comboBox_destination.setItemText(1, _translate("MainWindow", "成都"))
-        self.comboBox_destination.setItemText(2, _translate("MainWindow", "香港"))
-        self.comboBox_destination.setItemText(3, _translate("MainWindow", "哈尔滨"))
-        self.comboBox_destination.setItemText(4, _translate("MainWindow", "海南"))
-        self.comboBox_destination.setItemText(5, _translate("MainWindow", "上海"))
-        self.comboBox_destination.setItemText(6, _translate("MainWindow", "长春"))
-        self.comboBox_destination.setItemText(7, _translate("MainWindow", "兰州"))
-        self.comboBox_destination.setItemText(8, _translate("MainWindow", "广州"))
-        self.comboBox_destination.setItemText(9, _translate("MainWindow", "长沙"))
-        self.comboBox_destination.setItemText(10, _translate("MainWindow", "南昌"))
-        self.label_date.setText(_translate("MainWindow", "DATE"))
-        self.label_class.setText(_translate("MainWindow", "Class"))
-        self.comboBox_class.setItemText(0, _translate("MainWindow", "头等舱"))
-        self.comboBox_class.setItemText(1, _translate("MainWindow", "商务舱"))
-        self.comboBox_class.setItemText(2, _translate("MainWindow", "经济舱"))
-        self.Search.setText(_translate("MainWindow", "Search"))
-        self.pushbutton_buy.setText(_translate("MainWindow", "Buy"))
-        self.label_departure_arrival.setText(_translate("MainWindow", "出发 - 到达："))
-        self.label_departure_transit.setText(_translate("MainWindow", "出发 - 经停："))
-        self.label_transit_arrival.setText(_translate("MainWindow", "经停 - 到达："))
-        self.menu_register_login.setTitle(_translate("MainWindow", "注册"))
-        self.menu_function.setTitle(_translate("MainWindow", "功能"))
-        self.menu_user.setTitle(_translate("MainWindow", "用户"))
-        self.menu_administrator.setTitle(_translate("MainWindow", "管理员"))
-        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
-        self.toolBar_2.setWindowTitle(_translate("MainWindow", "toolBar_2"))
-        self.toolBar_3.setWindowTitle(_translate("MainWindow", "toolBar_3"))
-        self.actionregister.setText(_translate("MainWindow", "用户注册"))
-        self.actionbuy.setText(_translate("MainWindow", "机票购买"))
-        self.action_buy.setText(_translate("MainWindow", "机票购买"))
-        self.actiond_my_ticket.setText(_translate("MainWindow", "我的机票"))
-        self.action_add_flight.setText(_translate("MainWindow", "添加航程"))
-        self.action_ad_search.setText(_translate("MainWindow", "查看乘客信息"))
-        self.actionlogin.setText(_translate("MainWindow", "用户/管理员登录"))
-        self.action_alter_flight.setText(_translate("MainWindow", "修改航程"))
-        self.actionquit.setText(_translate("MainWindow", "退出登录"))
-        self.actionchangefly.setText(_translate("MainWindow", "修改航班"))
-
-    def open_mytickets(self):
-        if (self.power != 1):
-            reply = QMessageBox.warning(self, "消息框标题","请用户先登录后再查看购票历史！", QMessageBox.Ok)
-        else:
-            my_ticket = MyTickets_Window()
-            my_ticket.username = self.username
-            my_ticket.exec_()
-
-    def quit_login(self):
-        if self.power != 0:
-            self.username = ''
-            self.power = 0
-            QMessageBox.information(self,
-                            "提示",
-                            "成功退出登录！",
-                            QMessageBox.Ok)
-        else:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您还未登录！",
-                                QMessageBox.Ok)
-            pass
-        pass
-    pass
-
-
-    def open_change_fly(self):
-        if self.power == 2:
-           change_fly_window = Change_Fly_Window()
-           change_fly_window.exec_()
-        elif self.power == 0:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您还未登录，请登录后使用该功能！",
-                                QMessageBox.Ok)
-        elif self.power == 1:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您不具备管理员权限！",
-                                QMessageBox.Ok)
-            pass
-        pass
-    pass
-
-    def open_change_flight(self):
-        if self.power == 2:
-           change_flight_window = Change_Flight_Window()
-           change_flight_window.exec_()
-        elif self.power == 0:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您还未登录，请登录后使用该功能！",
-                                QMessageBox.Ok)
-        elif self.power == 1:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您不具备管理员权限！",
-                                QMessageBox.Ok)
-
-
-
-    def open_login(self):
-        login_window = Login_Window()
-        login_window.exec_()
-        self.username = login_window.username
-        self.power = login_window.power
-
-
-    def open_register(self):
-        register_window = Register_Window()
-        register_window.exec_()
-
-    def open_add_flight(self):
-        if self.power == 2:
-            add_flight_window = Add_Flight_Window()
-            add_flight_window.exec_()
-        elif self.power == 0:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您还未登录，请登录后使用该功能！",
-                                QMessageBox.Ok)
-        elif self.power == 1:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您不具备管理员权限！",
-                                QMessageBox.Ok)
-    def open_ad_search(self):
-        if self.power == 2:
-            ad_search_window = Ad_Search_Window()
-            ad_search_window.exec_()
-        elif self.power == 0:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您还未登录，请登录后使用该功能！",
-                                QMessageBox.Ok)
-        elif self.power == 1:
-            QMessageBox.warning(self,
-                                "警告",
-                                "您不具备管理员权限！",
-                                QMessageBox.Ok)
-
-    def jump_buy(self):
-        if (self.power < 1):
-            reply = QMessageBox.warning(self,
-                                        "提示",
-                                        "请先登录后再购票！",
-                                        QMessageBox.Ok)
-        elif (self.state == -1):
-            reply = QMessageBox.warning(self,
-                                        "提示",
-                                        "请选取要买的票！",
-                                        QMessageBox.Ok)
-        else:
-            jump_buy_window = Jump_Buy_Window()
-            jump_buy_window.state = self.state
-            jump_buy_window.num = self.num
-            jump_buy_window.username = self.username
-            jump_buy_window.exec_()
-            self.state = -1
-
-    def da(self):
-        self.state = 0
-        self.index = self.tableView_departure_arrival.currentIndex().row()
-        # print(self.index)
-        model = self.tableView_departure_arrival.model()
-        index = model.index(self.index, 0)
-        self.num = model.data(index)
-        # print(data)
-
-    def dt(self):
-        self.state = 1
-        self.index = self.tableView_departure_transit.currentIndex().row()
-        # print(self.index)
-        model = self.tableView_departure_transit.model()
-        index = model.index(self.index, 0)
-        self.num = model.data(index)
-
-    def ta(self):
-        self.state = 2
-        self.index = self.tableView_transit_destination.currentIndex().row()
-        # print(self.index)
-        model = self.tableView_transit_destination.model()
-        index = model.index(self.index, 0)
-        self.num = model.data(index)

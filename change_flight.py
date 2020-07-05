@@ -161,7 +161,7 @@ class Ui_Dialog(object):
                     QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
                                                   QtWidgets.QMessageBox.Ok)
             else:
-                self.model.setFilter("航程号 = %s" % (flight_no))
+                self.model.setFilter("航程号 = '%s'" % (flight_no))
                 # print(self.model.filter())
                 self.model.setSort(0, QtCore.Qt.AscendingOrder)
                 if not self.model.select():
@@ -190,7 +190,7 @@ class Ui_Dialog(object):
                     QtWidgets.QMessageBox.warning(self, "提示", "%s" % (self.model.lastError().text()),
                                                   QtWidgets.QMessageBox.Ok)
             else:
-                self.model.setFilter("航班编号 = %s" % (flight_no))
+                self.model.setFilter("航班编号 = '%s'" % (flight_no))
                 # print(self.model.filter())
                 self.model.setSort(0, QtCore.Qt.AscendingOrder)
                 if not self.model.select():
