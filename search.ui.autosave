@@ -398,7 +398,7 @@
      <property name="title">
       <string>用户</string>
      </property>
-     <addaction name="action__alter_info"/>
+     <addaction name="action_alter_info"/>
      <addaction name="actiond_my_ticket"/>
     </widget>
     <widget class="QMenu" name="menu_administrator">
@@ -467,7 +467,7 @@
     <string>机票购买</string>
    </property>
   </action>
-  <action name="action__alter_info">
+  <action name="action_alter_info">
    <property name="text">
     <string>修改个人信息</string>
    </property>
