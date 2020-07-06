@@ -89,8 +89,7 @@ class Ui_Dialog(object):
     def table_copy(self):
         flight_no = self.lineEdit_flight_no.text()
         query_copy = QSqlQuery()  # 新建sql对象
-        query_copy.prepare('SELECT * INTO 隐私查询 FROM 订票 '
-                      'WHERE 航程号 = :flight_no')  # 输入SQL语句
+        query_copy.prepare('EXEC copy_table :flight_no')  # 输入SQL语句
         query_copy.bindValue(":flight_no", flight_no)  # 绑定占位符和相应的功能
         query_copy.exec_()
         #QMessageBox.information(self, "提示", "创建成功!", QMessageBox.Ok)
