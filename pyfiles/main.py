@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 import PyQt5.QtGui
 # 在这里加上所有的文件
+from search import *
 import search
 
 
@@ -12,6 +13,32 @@ class MyWindow(QMainWindow, search.Ui_MainWindow):
         super(MyWindow, self).__init__(parent)
         self.setupUi(self)
 
+conn = pyodbc.connect('DRIVER={SQL SERVER NATIVE CLIENT 10.0};SERVER=127.0.0.1;DATABASE=master;UID=sa;PWD=123456',autocommit= True)
+cursor = conn.cursor()
+sql = '''select * from sys.databases where name = 'air'
+'''
+cursor.execute(sql)
+effectrow1 = cursor.fetchall()
+conn.close()
+#可以判断是否存在air数据库
+if len(effectrow1) == 1:
+    conn = pyodbc.connect('DRIVER={SQL SERVER NATIVE CLIENT 10.0};SERVER=127.0.0.1;DATABASE=air;UID=sa;PWD=123456')
+    cursor = conn.cursor()
+    sql = '''select 1
+       from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+       where r.fkeyid = object_id('航班') and o.name = 'FK_航班_FK_飞机编号_飞机登记'
+    '''
+    cursor.execute(sql)
+    effectrow2 = cursor.fetchall()
+    conn.close()
+    if len(effectrow2) == 0:
+        print('WRONG AIR, RESETUP!')
+        import dbsetup
+    else:
+        print('ALREADY SETUP AIR')
+else:
+    print('NO AIR, SETUP AIR!')
+    import dbsetup
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
