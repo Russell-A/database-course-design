@@ -6,12 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
-    <height>334</height>
+    <width>1600</width>
+    <height>900</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>567</width>
+    <height>384</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>航空票务系统  -V 1.0.0</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>flight.png</normaloff>flight.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -256,6 +266,9 @@
               <day>1</day>
              </datetime>
             </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -300,6 +313,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="pushbutton_buy">
+          <property name="text">
+           <string>Buy</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -316,14 +336,38 @@
        </spacer>
       </item>
       <item>
-       <widget class="QTableView" name="output_search">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_departure_arrival">
+          <property name="text">
+           <string>出发 - 到达：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableView_departure_arrival"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_departure_transit">
+          <property name="text">
+           <string>出发 - 经停：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableView_departure_transit"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_transit_arrival">
+          <property name="text">
+           <string>经停 - 到达：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableView_transit_destination"/>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -334,38 +378,50 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>567</width>
+     <width>1600</width>
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menu_register_login">
     <property name="title">
      <string>注册</string>
     </property>
     <addaction name="actionregister"/>
+    <addaction name="actionlogin"/>
+    <addaction name="actionquit"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="menu_function">
     <property name="title">
      <string>功能</string>
     </property>
-    <widget class="QMenu" name="menu_3">
+    <widget class="QMenu" name="menu_user">
      <property name="title">
       <string>用户</string>
      </property>
-     <addaction name="action1"/>
-     <addaction name="actionds"/>
+     <addaction name="action_alter_info"/>
+     <addaction name="actiond_my_ticket"/>
     </widget>
-    <widget class="QMenu" name="menu_4">
+    <widget class="QMenu" name="menu_administrator">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="title">
       <string>管理员</string>
      </property>
-     <addaction name="actionkj"/>
+     <addaction name="action_ad_search"/>
+     <addaction name="action_add_flight"/>
+     <addaction name="action_alter_flight"/>
+     <addaction name="actionchangefly"/>
+     <addaction name="actions_change_plane"/>
+     <addaction name="actions_change_plane_type"/>
+     <addaction name="actions_change_airport"/>
     </widget>
-    <addaction name="menu_3"/>
-    <addaction name="menu_4"/>
+    <addaction name="menu_user"/>
+    <addaction name="separator"/>
+    <addaction name="menu_administrator"/>
    </widget>
-   <addaction name="menu"/>
-   <addaction name="menu_2"/>
+   <addaction name="menu_register_login"/>
+   <addaction name="menu_function"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -411,39 +467,65 @@
     <string>机票购买</string>
    </property>
   </action>
-  <action name="action1">
+  <action name="action_alter_info">
    <property name="text">
-    <string>机票购买</string>
+    <string>修改个人信息</string>
    </property>
   </action>
-  <action name="actionds">
+  <action name="actiond_my_ticket">
    <property name="text">
     <string>我的机票</string>
    </property>
   </action>
-  <action name="actionkj">
+  <action name="action_add_flight">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>添加数据</string>
+    <string>添加航程</string>
+   </property>
+  </action>
+  <action name="actionlogin">
+   <property name="text">
+    <string>用户/管理员登录</string>
+   </property>
+  </action>
+  <action name="action_alter_flight">
+   <property name="text">
+    <string>查看\修改航程</string>
+   </property>
+  </action>
+  <action name="actionquit">
+   <property name="text">
+    <string>退出登录</string>
+   </property>
+  </action>
+  <action name="actionchangefly">
+   <property name="text">
+    <string>查看\修改航班</string>
+   </property>
+  </action>
+  <action name="action_ad_search">
+   <property name="text">
+    <string>查看乘客信息</string>
+   </property>
+  </action>
+  <action name="actions_change_plane">
+   <property name="text">
+    <string>查看\修改飞机信息</string>
+   </property>
+  </action>
+  <action name="actions_change_plane_type">
+   <property name="text">
+    <string>查看\修改飞机机型</string>
+   </property>
+  </action>
+  <action name="actions_change_airport">
+   <property name="text">
+    <string>查看\修改机场信息</string>
    </property>
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>Search</sender>
-   <signal>clicked()</signal>
-   <receiver>output_search</receiver>
-   <slot>clearSelection()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>254</x>
-     <y>294</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>316</x>
-     <y>234</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
