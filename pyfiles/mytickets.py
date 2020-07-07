@@ -18,6 +18,9 @@ class Ui_Mytickets(object):
         self.name = ''
         Dialog.setObjectName("Dialog")
         Dialog.resize(924, 799)
+        Dialog_jump_buy.resize(400, 300)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../icon/flight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Dialog.setMinimumSize(QtCore.QSize(924, 799))
         Dialog.setStyleSheet("/**********子界面背景**********/\n"
                              "QWidget#customWidget {\n"
@@ -987,7 +990,7 @@ class Ui_Mytickets(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "我的机票"))
         self.choice2.setText(_translate("Dialog", "未出行"))
         self.choice3.setText(_translate("Dialog", "历史记录"))
         self.label.setText(_translate("Dialog", "我的机票"))
