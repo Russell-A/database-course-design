@@ -925,8 +925,13 @@ class Ui_Dialog_jump_buy(object):
         conn = pyodbc.connect(
             'DRIVER={SQL SERVER NATIVE CLIENT 10.0};SERVER=127.0.0.1;DATABASE=air;UID=sa;PWD=123456')
         conn.autocommit = False
-        conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_SERIALIZABLE)
+        # conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_SERIALIZABLE)
         cursor = conn.cursor()
+        # 设置行锁直到事务结束
+        sql_lock = "select * from 飞行计划安排 with (xlock,paglock) where 航程号 = ?"
+        cursor.execute(sql_lock, self.num)
+
+
         if (self.state == 0):
             sql = "select *"\
                   " from 飞行计划安排 inner join 航班 on 飞行计划安排.航班编号 = 航班.航班编号"\
