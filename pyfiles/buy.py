@@ -11,9 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import jump_buy as jpb
 
 class Ui_main(object):
-
-
-    def setupUi(self, main):
+     def setupUi(self, main):
         main.setObjectName("main")
         main.resize(1271, 852)
         icon = QtGui.QIcon()
