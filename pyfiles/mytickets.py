@@ -18,7 +18,6 @@ class Ui_Mytickets(object):
         self.name = ''
         Dialog.setObjectName("Dialog")
         Dialog.resize(924, 799)
-        Dialog_jump_buy.resize(400, 300)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../icon/flight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Dialog.setMinimumSize(QtCore.QSize(924, 799))
@@ -974,6 +973,7 @@ class Ui_Mytickets(object):
         self.nextpage_btn.setObjectName("nextpage_btn")
 
         self.retranslateUi(Dialog)
+        self.go_or_not = 0 # 0 nondeparture , 1 gone
         # choice3 已出行 按钮
         self.choice3.clicked.connect(self.alreadygone)
         #choice2 未出行按钮
@@ -1035,6 +1035,7 @@ class Ui_Mytickets(object):
 
 
 
+
     # 以下是一堆槽函数
     def refund(self,ticketnum):
         '''
@@ -1072,6 +1073,7 @@ class Ui_Mytickets(object):
 
     # 除了查询条件 ，nondeparture 与 alreadygone 一样
     def nondeparture(self):
+        self.go_or_not = 0
         self.ticketdetails.show()
         self.ticketdetails_2.show()
         self.ticketdetails_3.show()
@@ -1149,6 +1151,7 @@ class Ui_Mytickets(object):
         已出行机票……仅记录
         '''
         #username = self.xxx
+        self.go_or_not = 1
         username = self.username  #实际中已登录的信息
         self.ticketdetails.hide()
         self.ticketdetails_2.hide()
@@ -1230,8 +1233,16 @@ class Ui_Mytickets(object):
         self.ticket_info_2.hide()
         self.ticket_info_3.hide()
         query = QSqlQuery()
-        query.prepare('Select * From 用户购票信息 where 用户名 = :username ')  # 输入SQL语句
+        if self.go_or_not:
+            query.prepare('Select * From 用户购票信息 '
+                        'where 用户名 = :username and 出发时间 < :specialtime')  # 输入SQL语句  改成大于号就好了，但为了方便测试先不改
+        else:
+            query.prepare('Select * From 用户购票信息 '
+                          'where 用户名 = :username and 出发时间 >= :specialtime')  # 输入SQL语句  改成大于号就好了，但为了方便测试先不改
         query.bindValue(":username", username)
+        now = QDateTime.currentDateTime()
+        now = now.toString("yyyy-MM-dd HH:mm:ss")
+        query.bindValue(":specialtime",now)
         query.exec_()
         i = 1
         while query.next():
@@ -1302,8 +1313,16 @@ class Ui_Mytickets(object):
         self.ticket_info_2.hide()
         self.ticket_info_3.hide()
         query = QSqlQuery()
-        query.prepare('Select * From 用户购票信息 where 用户名 = :username ')  # 输入SQL语句
+        if self.go_or_not:
+            query.prepare('Select * From 用户购票信息 '
+                        'where 用户名 = :username and 出发时间 < :specialtime')  # 输入SQL语句  改成大于号就好了，但为了方便测试先不改
+        else:
+            query.prepare('Select * From 用户购票信息 '
+                          'where 用户名 = :username and 出发时间 >= :specialtime')  # 输入SQL语句  改成大于号就好了，但为了方便测试先不改
         query.bindValue(":username", username)
+        now = QDateTime.currentDateTime()
+        now = now.toString("yyyy-MM-dd HH:mm:ss")
+        query.bindValue(":specialtime",now)
         query.exec_()
         if self.index == 0:
             pass

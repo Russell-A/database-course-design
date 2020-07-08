@@ -7,7 +7,6 @@ from search import *
 import search
 
 
-
 class MyWindow(QMainWindow, search.Ui_MainWindow):
     def __init__(self, parent=None):
         super(MyWindow, self).__init__(parent)
@@ -31,14 +30,14 @@ if len(effectrow1) == 1:
     cursor.execute(sql)
     effectrow2 = cursor.fetchall()
     conn.close()
-#     if len(effectrow2) == 0:
-#         print('WRONG AIR, RESETUP!')
-#         import dbsetup
-#     else:
-#         print('ALREADY SETUP AIR')
-# else:
-#     print('NO AIR, SETUP AIR!')
-#     import dbsetup
+    if len(effectrow2) == 0:
+        print('WRONG AIR, RESETUP!')
+        import dbsetup
+    else:
+        print('ALREADY SETUP AIR')
+else:
+    print('NO AIR, SETUP AIR!')
+    import dbsetup
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
