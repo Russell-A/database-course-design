@@ -10,8 +10,11 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QDate, QTime, QDateTime, Qt
 from PyQt5.QtWidgets import *
 from PyQt5.QtSql import *
+from PyQt5.QtCore import QDate, QTime, QDateTime, Qt
+
 import sys
 import register
 import login
@@ -1110,9 +1113,10 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.dateEdit.sizePolicy().hasHeightForWidth())
         self.dateEdit.setSizePolicy(sizePolicy)
-        self.dateEdit.setDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 1), QtCore.QTime(0, 0, 0)))
-        self.dateEdit.setMaximumDateTime(QtCore.QDateTime(QtCore.QDate(2019, 12, 31), QtCore.QTime(23, 59, 59)))
-        self.dateEdit.setMinimumDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 1), QtCore.QTime(0, 0, 0)))
+        self.dateEdit.setDateTime(QDateTime.currentDateTime())
+        now = QDateTime.currentDateTime()
+        self.dateEdit.setMaximumDateTime(now.addDays(14))
+        self.dateEdit.setMinimumDateTime(QDateTime.currentDateTime())
         self.dateEdit.setCalendarPopup(True)
         self.dateEdit.setObjectName("dateEdit")
         self.horizontalLayout_4.addWidget(self.dateEdit)

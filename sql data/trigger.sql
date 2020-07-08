@@ -25,36 +25,70 @@ set [商务舱（开始-到达）剩余座位] = @business_num, [商务舱（开始-经停）剩余座位]
 where 航程号 = @fly_no
 GO
 
+--原触发器有问题…………
+DROP trigger tr_refund_ticket
+GO
+--重来一波 
 CREATE trigger tr_refund_ticket 
 ON 订票 AFTER DELETE
 AS 
-Declare @seat varchar(20), @flight1 varchar(20) ,@flight2 varchar(20),@begin varchar(20), @terminal varchar(20) --flight1 航程号 flight2 航班号 /出发、到达机场 
-select @flight1 = 航程号,@seat = 舱位, @begin = 出发机场, @terminal = 目的机场  from deleted
-select @flight2 = 航班编号 from 飞行计划安排 where 航程号 = @flight1 
+DECLARE @seatnum int, @seat varchar(20), @flight1 varchar(20) ,@flight2 varchar(20),@begin varchar(20), @terminal varchar(20) --flight1 航程号 flight2 航班号 /出发、到达机场 
+SELECT @flight1 = 航程号,@seat = 舱位, @begin = 出发机场, @terminal = 目的机场  , @seatnum = 座位编号 FROM deleted
+SELECT @flight2 = 航班编号 FROM 飞行计划安排 WHERE 航程号 = @flight1 
 
 IF exists (select * from 出发经停 where 出发地 = @begin and 目的地 = @terminal and 航班编号 = @flight2)
 BEGIN
 	IF @seat = '商务舱'
+	BEGIN
 		Update 飞行计划安排 
 			set [商务舱（开始-经停）剩余座位] = [商务舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1
+		IF @seatnum NOT IN (SELECT 座位编号 FROM 订票 WHERE 航程号 = @flight1 AND 舱位 = @seat)
+			UPDATE 飞行计划安排
+				SET [商务舱（开始-到达）剩余座位] = [商务舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 	ELSE IF @seat = '头等舱'
+	BEGIN
 		Update 飞行计划安排 
-			set [头等舱（开始-经停）剩余座位] = [头等舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1
-	ELSE 
-	Update 飞行计划安排 
+			SET [头等舱（开始-经停）剩余座位] = [头等舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1
+		IF @seatnum NOT IN (SELECT 座位编号 FROM 订票 WHERE 航程号 = @flight1 AND 舱位 = @seat)
+			Update 飞行计划安排
+				set [头等舱（开始-到达）剩余座位] = [头等舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
+	ELSE
+	BEGIN
+		Update 飞行计划安排 
 			set [经济舱（开始-经停）剩余座位] = [经济舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1
+		IF @seatnum NOT IN (SELECT 座位编号 FROM 订票 WHERE 航程号 = @flight1 AND 舱位 = @seat)
+			Update 飞行计划安排
+				set [经济舱（开始-到达）剩余座位] = [经济舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 END
 IF exists (select * from 经停到达 where 出发地 = @begin and 目的地 = @terminal and 航班编号 = @flight2)
 BEGIN
-	IF @seat = '商务舱'
+		IF @seat = '商务舱'
+	BEGIN
 		Update 飞行计划安排 
 			set [商务舱（经停-到达）剩余座位] = [商务舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1
+		IF @seatnum NOT IN (SELECT 座位编号 FROM 订票 WHERE 航程号 = @flight1 AND 舱位 = @seat)
+			Update 飞行计划安排
+				set [商务舱（开始-到达）剩余座位] = [商务舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 	ELSE IF @seat = '头等舱'
+	BEGIN
 		Update 飞行计划安排 
 			set [头等舱（经停-到达）剩余座位] = [头等舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1
-	ELSE 
-	Update 飞行计划安排 
+		IF @seatnum NOT IN (SELECT 座位编号 FROM 订票 WHERE 航程号 = @flight1 AND 舱位 = @seat)
+			Update 飞行计划安排
+				set [头等舱（开始-到达）剩余座位] = [头等舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
+	ELSE
+	BEGIN
+		Update 飞行计划安排 
 			set [经济舱（经停-到达）剩余座位] = [经济舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1
+		IF @seatnum NOT IN (SELECT 座位编号 FROM 订票 WHERE 航程号 = @flight1 AND 舱位 = @seat)
+			Update 飞行计划安排
+				set [经济舱（开始-到达）剩余座位] = [经济舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 END
 IF exists (select * from 出发到达 where 出发地 = @begin and 目的地 = @terminal and 航班编号 = @flight2)
 BEGIN

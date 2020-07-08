@@ -11,8 +11,11 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QCoreApplication
 import pyodbc
+import time
 
 class Ui_Dialog_jump_buy(object):
+    num = -1
+    state = -1
     def setupUi(self, Dialog_jump_buy):
         Dialog_jump_buy.setObjectName("Dialog_jump_buy")
         Dialog_jump_buy.resize(400, 300)
@@ -927,10 +930,28 @@ class Ui_Dialog_jump_buy(object):
         conn.autocommit = False
         # conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_SERIALIZABLE)
         cursor = conn.cursor()
+        sql_wait = "select 数量 from 进程数 where 航程号 = ?"
+        result = cursor.execute(sql_wait, self.num).fetchall()
+
+        wait = result[0][0]
+
+        if (wait>=0):
+            reply = QMessageBox.information(self,
+                                        "提示",
+                                        "大约有"+str(wait)+"人正在排队买票，是否进入队列？",
+                                        QMessageBox.Yes | QMessageBox.No)
+            if (reply == QMessageBox.Yes):
+                sql_up = "update 进程数 set 数量 = 数量+1 where 航程号 = ?"
+                cursor.execute(sql_up, self.num)
+                cursor.commit()
+            else:
+                return
+
         # 设置行锁直到事务结束
         sql_lock = "select * from 飞行计划安排 with (xlock,paglock) where 航程号 = ?"
         cursor.execute(sql_lock, self.num)
 
+        # time.sleep(20)
 
         if (self.state == 0):
             sql = "select *"\
@@ -940,8 +961,8 @@ class Ui_Dialog_jump_buy(object):
                   " where 航程号 = ?"
 
             result = (cursor.execute(sql, self.num).fetchall())
-            dairport = result[0][29]
-            aairport = result[0][32]
+            dairport = result[0][30]
+            aairport = result[0][33]
             tacket_num = result[0][6:9]
         if (self.state == 1):
             sql = "select *"\
@@ -951,8 +972,8 @@ class Ui_Dialog_jump_buy(object):
                   " where 航程号 = ?"
 
             result = (cursor.execute(sql, self.num).fetchall())
-            dairport = result[0][29]
-            aairport = result[0][32]
+            dairport = result[0][30]
+            aairport = result[0][33]
             tacket_num = result[0][12:15]
         if (self.state == 2):
             sql = "select *"\
@@ -962,8 +983,8 @@ class Ui_Dialog_jump_buy(object):
                   " where 航程号 = ?"
 
             result = (cursor.execute(sql, self.num).fetchall())
-            dairport = result[0][29]
-            aairport = result[0][32]
+            dairport = result[0][30]
+            aairport = result[0][33]
             tacket_num = result[0][9:12]
         kind = {}
         kind['经济舱'] = 0
@@ -989,6 +1010,10 @@ class Ui_Dialog_jump_buy(object):
                                         "提示",
                                         "请先填写好信息！",
                                         QMessageBox.Yes)
+            sql_up = "update 进程数 set 数量 = 数量-1 where 航程号 = ?"
+            cursor.execute(sql_up, self.num)
+            cursor.commit()
+            conn.close()
         elif (tacket>0):
 
             update_sql = "update 飞行计划安排 set [" + cart + state_text[self.state]+"剩余座位] = [" + cart + state_text[self.state]+"剩余座位]-1"\
@@ -1017,13 +1042,23 @@ class Ui_Dialog_jump_buy(object):
                                         "购票成功！是否继续买票？",
                                         QMessageBox.Yes | QMessageBox.No)
             if (reply == QMessageBox.Yes):
-                conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_REPEATABLE_READ)
+                conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_READ_UNCOMMITTED)
+
+                sql_up = "update 进程数 set 数量 = 数量-1 where 航程号 = ?"
+                cursor.execute(sql_up, self.num)
+                cursor.commit()
+
                 conn.close()
                 self.phone_num.setText('')
                 self.identity_num.setText('')
                 self.name.setText('')
             else:
-                conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_REPEATABLE_READ)
+                conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_READ_UNCOMMITTED)
+
+                sql_up = "update 进程数 set 数量 = 数量-1 where 航程号 = ?"
+                cursor.execute(sql_up, self.num)
+                cursor.commit()
+
                 conn.close()
                 self.close()
         else:
@@ -1031,7 +1066,12 @@ class Ui_Dialog_jump_buy(object):
                                         "提示",
                                         "没有余票！",
                                         QMessageBox.Yes | QMessageBox.No)
-            conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_REPEATABLE_READ)
+            conn.set_attr(pyodbc.SQL_ATTR_TXN_ISOLATION, pyodbc.SQL_TXN_READ_UNCOMMITTED)
+
+            sql_up = "update 进程数 set 数量 = 数量-1 where 航程号 = ?"
+            cursor.execute(sql_up, self.num)
+            cursor.commit()
+
             conn.close()
     def remain_tacket(self):
         tacket_num = ()

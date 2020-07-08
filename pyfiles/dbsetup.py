@@ -188,6 +188,11 @@ create table 飞行计划安排 (
    "票价（经停-到达，头等舱）"      money                null,
    constraint PK_飞行计划安排 primary key (航程号)
 )
+create table 进程数 (
+航程号 int not null,
+数量 int default 0,
+foreign key(航程号) references 飞行计划安排(航程号) on delete cascade on update cascade
+)
 alter table 航班
    add constraint FK_航班_FK_飞机编号_飞机登记 foreign key (飞机编号)
       references 飞机登记 (飞机编号)
@@ -295,7 +300,24 @@ VALUES
 ('0006','2019-01-06 08:00:00',null,null,'2019-01-06 13:30:00',255,20,16,null,null,null,null,null,null,670,null,null,1100,null,null,1570,null,null),
 ('0007','2019-01-03 09:30:00',null,null,'2019-01-03 13:00:00',299,54,15,null,null,null,null,null,null,670,null,null,970,null,null,1270,null,null),
 ('0008','2019-01-04 08:30:00',null,null,'2019-01-04 10:30:00',299,54,14,null,null,null,null,null,null,400,null,null,700,null,null,1000,null,null),
-('0009','2019-01-06 11:30:00',null,null,'2019-01-03 15:00:00',297,54,15,null,null,null,null,null,null,570,null,null,870,null,null,1170,null,null)
+('0009','2019-01-06 11:30:00',null,null,'2019-01-03 15:00:00',297,54,15,null,null,null,null,null,null,570,null,null,870,null,null,1170,null,null),
+('0001','2020-07-14 08:00:00',null,null,'2020-07-14 10:30:00',117,0,7,null,null,null,null,null,null,500,null,null,800,null,null,1100,null,null),
+('0001','2020-07-16 08:00:00',null,null,'2020-07-16 10:30:00',120,0,8,null,null,null,null,null,null,500,null,null,800,null,null,1100,null,null),
+('0001','2020-07-18 08:00:00',null,null,'2020-07-18 10:30:00',120,0,8,null,null,null,null,null,null,500,null,null,800,null,null,1100,null,null),
+('0002','2020-07-15 13:00:00',null,null,'2020-07-15 16:30:00',118,0,8,null,null,null,null,null,null,500,null,null,800,null,null,1100,null,null),
+('0002','2020-07-19 13:00:00',null,null,'2020-07-19 16:30:00',120,0,7,null,null,null,null,null,null,500,null,null,800,null,null,1100,null,null),
+('0003','2020-07-14 10:00:00','2020-07-14 12:00:00','2020-07-14 13:00:00','2020-01-01 14:30:00',172,12,0,171,12,0,172,12,0,500,300,200,800,600,500,1100,900,800),
+('0003','2020-07-17 10:00:00','2020-07-17 12:00:00','2020-07-17 13:00:00','2020-01-04 14:30:00',173,12,0,173,12,0,173,12,0,500,300,200,800,600,500,1100,900,800),
+('0003','2020-07-20 10:00:00','2020-07-20 12:00:00','2020-07-20 13:00:00','2020-01-07 14:30:00',173,12,0,173,12,0,173,12,0,500,300,200,800,600,500,1100,900,800),
+('0004','2020-07-18 17:00:00',null,null,'2020-07-18 20:30:00',255,20,16,null,null,null,null,null,null,670,null,null,970,null,null,1270,null,null),
+('0005','2020-07-14 15:00:00','2020-07-14 17:00:00','2020-07-14 18:00:00','2020-07-14 20:30:00',260,41,8,260,42,8,260,41,8,600,300,300,900,450,450,1200,600,600),
+('0005','2020-07-17 15:00:00','2020-07-17 17:00:00','2020-07-17 18:00:00','2020-07-17 20:30:00',261,42,8,261,42,8,261,42,8,600,300,300,900,450,450,1200,600,600),
+('0005','2020-07-20 15:00:00','2020-07-20 17:00:00','2020-07-20 18:00:00','2020-07-20 20:30:00',261,42,8,261,42,8,261,42,8,600,300,300,900,450,450,1200,600,600),
+('0006','2020-07-15 08:00:00',null,null,'2020-07-15 13:30:00',255,20,16,null,null,null,null,null,null,670,null,null,1100,null,null,1570,null,null),
+('0006','2020-07-19 08:00:00',null,null,'2020-07-19 13:30:00',255,20,16,null,null,null,null,null,null,670,null,null,1100,null,null,1570,null,null),
+('0007','2020-07-16 09:30:00',null,null,'2020-07-16 13:00:00',299,54,15,null,null,null,null,null,null,670,null,null,970,null,null,1270,null,null),
+('0008','2020-07-17 08:30:00',null,null,'2020-07-17 10:30:00',299,54,14,null,null,null,null,null,null,400,null,null,700,null,null,1000,null,null),
+('0009','2020-07-16 11:30:00',null,null,'2020-07-16 15:00:00',296,54,15,null,null,null,null,null,null,570,null,null,870,null,null,1170,null,null)
 INSERT INTO 订票
 VALUES
 (1,'首都机场','双流机场','001','经济舱','余夏','李铁柱','男','老人','411002196402122371','13837439823'),
@@ -310,6 +332,7 @@ VALUES
 (16,'首都机场','黄沙机场','001','头等舱','aa','温蒂','女','成人','312001199302122362','15702986483'),
 (17,'首都机场','昌北机场','001','经济舱','郑州绿博园','王文倩','女','老人','411001196802222381','17827362817'),
 (17,'首都机场','昌北机场','002','经济舱','上海市文化街','贺天成','男','成人','332001199409122372','13892836483')
+insert into 进程数(航程号) select 航程号 from 飞行计划安排
 '''
 cursor.execute(sql)
 cursor.commit()
@@ -527,56 +550,81 @@ set [商务舱（开始-到达）剩余座位] = @business_num, [商务舱（开
 [经济舱（开始-到达）剩余座位] = @economy_num, [经济舱（开始-经停）剩余座位]  = @economy_num, [经济舱（经停-到达）剩余座位]  = @economy_num,
 [头等舱（开始-到达）剩余座位]  = @first_num,[头等舱（开始-经停）剩余座位]   = @first_num,[头等舱（经停-到达）剩余座位]   = @first_num
 where 航程号 = @fly_no
+insert 进程数(航程号) values(@fly_no)
 '''
 cursor.execute(sql)
 cursor.commit()
 
-sql = '''CREATE trigger tr_refund_ticket
+sql = '''CREATE trigger tr_refund_ticket 
 ON 订票 AFTER DELETE
-AS
-Declare @seat varchar(20), @flight1 varchar(20) ,@flight2 varchar(20),@begin varchar(20), @terminal varchar(20) --flight1 航程号 flight2 航班号 /出发、到达机场
+AS 
+Declare @seat varchar(20), @flight1 varchar(20) ,@flight2 varchar(20),@begin varchar(20), @terminal varchar(20) --flight1 航程号 flight2 航班号 /出发、到达机场 
 select @flight1 = 航程号,@seat = 舱位, @begin = 出发机场, @terminal = 目的机场  from deleted
-select @flight2 = 航班编号 from 飞行计划安排 where 航程号 = @flight1
+select @flight2 = 航班编号 from 飞行计划安排 where 航程号 = @flight1 
 
 IF exists (select * from 出发经停 where 出发地 = @begin and 目的地 = @terminal and 航班编号 = @flight2)
 BEGIN
 	IF @seat = '商务舱'
-		Update 飞行计划安排
+	BEGIN
+		Update 飞行计划安排 
 			set [商务舱（开始-经停）剩余座位] = [商务舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1
-	ELSE IF @seat = '头等舱'
 		Update 飞行计划安排
+			set [商务舱（开始-到达）剩余座位] = [商务舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
+	ELSE IF @seat = '头等舱'
+	BEGIN
+		Update 飞行计划安排 
 			set [头等舱（开始-经停）剩余座位] = [头等舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1
+		Update 飞行计划安排
+			set [头等舱（开始-到达）剩余座位] = [头等舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 	ELSE
-	Update 飞行计划安排
+	BEGIN
+		Update 飞行计划安排 
 			set [经济舱（开始-经停）剩余座位] = [经济舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1
+		Update 飞行计划安排
+			set [经济舱（开始-到达）剩余座位] = [经济舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 END
 IF exists (select * from 经停到达 where 出发地 = @begin and 目的地 = @terminal and 航班编号 = @flight2)
 BEGIN
-	IF @seat = '商务舱'
-		Update 飞行计划安排
+		IF @seat = '商务舱'
+	BEGIN
+		Update 飞行计划安排 
 			set [商务舱（经停-到达）剩余座位] = [商务舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1
-	ELSE IF @seat = '头等舱'
 		Update 飞行计划安排
+			set [商务舱（开始-到达）剩余座位] = [商务舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
+	ELSE IF @seat = '头等舱'
+	BEGIN
+		Update 飞行计划安排 
 			set [头等舱（经停-到达）剩余座位] = [头等舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1
+		Update 飞行计划安排
+			set [头等舱（开始-到达）剩余座位] = [头等舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 	ELSE
-	Update 飞行计划安排
+	BEGIN
+		Update 飞行计划安排 
 			set [经济舱（经停-到达）剩余座位] = [经济舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1
+		Update 飞行计划安排
+			set [经济舱（开始-到达）剩余座位] = [经济舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
+	END
 END
 IF exists (select * from 出发到达 where 出发地 = @begin and 目的地 = @terminal and 航班编号 = @flight2)
 BEGIN
 	IF @seat = '商务舱'
 	begin
-		Update 飞行计划安排
-			set [商务舱（开始-到达）剩余座位] = [商务舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1
+		Update 飞行计划安排 
+			set [商务舱（开始-到达）剩余座位] = [商务舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
 		UPdate 飞行计划安排
 			set [商务舱（开始-经停）剩余座位] = [商务舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1 and [商务舱（开始-经停）剩余座位] is not NULL
 		Update 飞行计划安排
-			set [商务舱（经停-到达）剩余座位] = [商务舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1 and [商务舱（经停-到达）剩余座位] is not NULL
+			set [商务舱（经停-到达）剩余座位] = [商务舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1 and [商务舱（经停-到达）剩余座位] is not NULL	
 	end
 	IF @seat = '头等舱'
 	BEGIN
-		Update 飞行计划安排
-			set [头等舱（开始-到达）剩余座位] = [头等舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1
+		Update 飞行计划安排 
+			set [头等舱（开始-到达）剩余座位] = [头等舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1 
 		Update 飞行计划安排
 			set [头等舱（开始-经停）剩余座位] = [头等舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1 and [头等舱（开始-经停）剩余座位] is not NULL
 		Update 飞行计划安排
@@ -584,14 +632,15 @@ BEGIN
 	END
 	IF @seat = '经济舱'
 	BEGIN
-	Update 飞行计划安排
+	Update 飞行计划安排 
 			set [经济舱（开始-到达）剩余座位] = [经济舱（开始-到达）剩余座位] + 1  where 航程号 = @flight1
 	Update 飞行计划安排
 			set [经济舱（开始-经停）剩余座位] = [经济舱（开始-经停）剩余座位] + 1  where 航程号 = @flight1 and [经济舱（开始-经停）剩余座位] is not NULL
 	Update 飞行计划安排
 			set [经济舱（经停-到达）剩余座位] = [经济舱（经停-到达）剩余座位] + 1  where 航程号 = @flight1 and [经济舱（经停-到达）剩余座位] is not NULL
 	END
-END'''
+END
+'''
 cursor.execute(sql)
 cursor.commit()
 conn.close()
