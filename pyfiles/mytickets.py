@@ -20,6 +20,7 @@ class Ui_Mytickets(object):
         Dialog.resize(924, 799)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../icon/flight.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Dialog.setWindowIcon(icon)
         Dialog.setMinimumSize(QtCore.QSize(924, 799))
         Dialog.setStyleSheet("/**********子界面背景**********/\n"
                              "QWidget#customWidget {\n"

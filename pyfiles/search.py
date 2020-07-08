@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from PyQt5.QtCore import QDate, QTime, QDateTime, Qt
 from PyQt5.QtWidgets import *
 from PyQt5.QtSql import *
@@ -1586,6 +1586,7 @@ class Ui_MainWindow(object):
         self.model1.setFilter("航班编号 in %s and DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0 and [%s（开始-经停）剩余座位] > 0 "
                               % (flight_dt, self.dateEdit.date().toString("yyyy-MM-dd"),
                                  self.comboBox_class.currentText()))
+        self.model1.setSort(2, QtCore.Qt.AscendingOrder)
         self.model1.select()
 
         self.tableView_departure_transit.hideColumn(4)
@@ -1653,6 +1654,7 @@ class Ui_MainWindow(object):
         # self.model.setFilter("DATEDIFF(DAYOFYEAR, '%s', 计划出发时间) = 0" % (self.dateEdit.date().toString("yyyy-MM-dd") ))
 
         # print(self.model.filter())
+        self.model.setSort(2, QtCore.Qt.AscendingOrder)
         self.model.select()  # 执行SQL select
         self.tableView_departure_arrival.hideColumn(3)
         self.tableView_departure_arrival.hideColumn(4)
@@ -1720,6 +1722,7 @@ class Ui_MainWindow(object):
                               % (flight_ta, self.dateEdit.date().toString("yyyy-MM-dd"),
                                  self.comboBox_class.currentText()))
         # print(self.model2.filter())
+        self.model2.setSort(4, QtCore.Qt.AscendingOrder)
         self.model2.select()
 
         self.tableView_transit_destination.hideColumn(2)
