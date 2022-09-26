@@ -1,3 +1,29 @@
+### Instructions of the airline ticket booking system
+
+The demo system is developed with two Python package: PyQt5 and pyodbc. The database we use is SQL SERVER 2008 R2.
+
+* Instructions befrore usage：
+  1. The user needs to install Python package: PyQt5 and pyodbc before usage.
+  2. The user needs to ensable super account "sa" in the database to allow us to modify the database. Please refer to https://blog.csdn.net/ren6370/article/details/73409989
+  3. The adminstrator can carry out "crbas.sql" to create sample data sheets in the database. He can also carry out "trigger.sql", "sqlviews.sqk", "PD_search.sql", "copy_table.sql" to create the view, trigger, and process needed for the program.
+   
+* Instructions of the functions:
+    Register and log in module:
+    Users can register and log in in the "register" menu.
+    The program will automatically distinguish whether the user is an administrator or a common customer.
+    The program enables the new users to register. The new users need to input their file name and passcode.
+    Users can log out the system by clicking "Log out"
+
+    Searching and buying tickets in module:
+    Before logging in, the users can search on the main page whether this is any ticket available by departure date, departure place, destination and flight class. The program wull show all the available tickets and it's flight number, departure time, arrival time, tickets left, and price.
+    After logging in, the users can buy tickets. Buy searching and clicking the available tickets, the users can click "buy" to buy tickets. Ther users need to choose flight class. They also need to input their sex, identity and phone number. When clicking the "but" button, the program uses a lock to lock the inquired line, preventing other process to modify these data to solve the problem of high mutiprocesssing.
+    
+    The data management module:
+    The usrs can modify his passcode and contact in formation. They can also searching for their used and unused tickets, it will shows the departure airport, destination airport and flight time, and they can return the unused tickets.
+    The adminstrators can add new fligts. In this way, the left tickets will be generated automatically by searching for the flight's maximum available seats. The function is implemented with trigger. They can search for specific flight and modify it. They can also inquiry the customers' information, but the customers' privacy is protected by differential privacy.
+
+
+
 ### 航空票务系统使用说明
 
 * 本系统基于PyQt5以及pyodbc两个模块以及SQL SERVER 2008 R2开发，开发小组保留所有权
